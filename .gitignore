@@ -1,0 +1,11 @@
+# Fichiers de configuration sensibles
+config/database.php
+
+# Dossiers d'uploads d'images (on ne garde que le placeholder)
+public/uploads/*
+!public/uploads/.gitkeep
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+.vscode/
