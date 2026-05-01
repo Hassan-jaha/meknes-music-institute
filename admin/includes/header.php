@@ -24,17 +24,18 @@ if (!isset($_SESSION['admin_id'])) {
     <link rel="stylesheet" href="<?= asset('public/css/style.css') ?>">
     <style>
         .admin-nav { background: var(--color-blue-deep); padding: 1rem 0; color: white; border-bottom: 3px solid var(--color-gold-primary); }
-        .admin-nav .container { display: flex; justify-content: space-between; align-items: center; }
-        .admin-nav a { color: white; margin-right: 15px; font-weight: 500; font-size: 0.9rem; }
+        .admin-nav .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .admin-nav-links { display: flex; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .admin-nav a { color: white; font-weight: 500; font-size: 0.9rem; text-decoration: none; }
         .admin-nav a:hover { color: var(--color-gold-primary); }
-        .admin-header-title { font-family: var(--font-heading); font-size: 1.5rem; color: var(--color-gold-primary); }
+        .admin-header-title { font-family: var(--font-heading); font-size: 1.5rem; color: var(--color-gold-primary); white-space: nowrap; }
     </style>
 </head>
 <body>
 <nav class="admin-nav">
     <div class="container">
         <div class="admin-header-title"><?= __('admin_login_header') ?></div>
-        <div>
+        <div class="admin-nav-links">
             <a href="<?= asset('admin/dashboard.php') ?>"><?= __('admin_dashboard') ?></a>
             <a href="<?= asset('admin/actualites/index.php') ?>"><?= __('nav_news') ?></a>
             <a href="<?= asset('admin/annonces/index.php') ?>"><?= __('nav_announcements') ?></a>
@@ -42,14 +43,14 @@ if (!isset($_SESSION['admin_id'])) {
             <a href="<?= asset('admin/messages/index.php') ?>"><?= __('admin_manage_messages') ?></a>
             
             <!-- Lang Selector Admin -->
-            <span style="margin: 0 10px; border-left: 1px solid rgba(255,255,255,0.2); padding-left: 10px;">
-                <a href="?lang=fr">FR</a> | 
-                <a href="?lang=ar">AR</a> | 
-                <a href="?lang=en">EN</a> | 
+            <span style="border-left: 1px solid rgba(255,255,255,0.2); padding-left: 15px; display: flex; gap: 8px;">
+                <a href="?lang=fr">FR</a>
+                <a href="?lang=ar">AR</a>
+                <a href="?lang=en">EN</a>
                 <a href="?lang=zgh">ⵣ</a>
             </span>
 
-            <a href="<?= asset('index.php') ?>" target="_blank">🌐 <?= __('admin_back_to_site') ?></a>
+            <a href="<?= asset('index.php') ?>" target="_blank" style="margin-left: 10px;">🌐 <?= __('admin_back_to_site') ?></a>
             <a href="<?= asset('admin/logout.php') ?>" style="color: #ff7675;"><?= __('admin_logout') ?></a>
         </div>
     </div>
