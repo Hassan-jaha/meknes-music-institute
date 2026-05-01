@@ -1,9 +1,9 @@
 <?php
-// محاولة جلب البيانات من Railway، وإذا لم توجد نستخدم بيانات الـ localhost
+// جلب الإعدادات من نظام Railway تلقائياً
 $host     = getenv('MYSQLHOST') ?: 'localhost';
-$db_name  = getenv('MYSQLDATABASE') ?: 'institut_musique'; // تأكد من اسم قاعدتك في لوكال
+$db_name  = getenv('MYSQLDATABASE') ?: 'institut_musique';
 $user     = getenv('MYSQLUSER') ?: 'root';
-$password = getenv('MYSQLPASSWORD') ?: ''; // غالباً في اللوكال تكون فارغة
+$password = getenv('MYSQLPASSWORD') ?: '';
 $port     = getenv('MYSQLPORT') ?: '3306';
 
 try {
