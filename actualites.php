@@ -15,7 +15,7 @@ $total_stmt = $pdo->query("SELECT COUNT(*) FROM actualites");
 $total_items = $total_stmt->fetchColumn();
 $total_pages = ceil($total_items / $limit);
 
-$stmt = $pdo->prepare("SELECT * FROM actualites ORDER BY date DESC LIMIT :limit OFFSET :offset");
+$stmt = $pdo->prepare("SELECT * FROM actualites ORDER BY date_publication DESC LIMIT :limit OFFSET :offset");
 $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
 $stmt->execute();
@@ -24,14 +24,14 @@ $actualites = $stmt->fetchAll();
 
 <section class="section">
     <div class="container">
-        <h2 class="section-title"><?= __('page_news_title') ?></h2>
+        <h2 class="section-title">Toutes les Actualités</h2>
         
         <div class="grid">
             <?php foreach ($actualites as $news): ?>
             <article class="card">
-                <img src="<?= asset(h($news['image'])) ?>" class="card-img" alt="<?= h($news['titre']) ?>" loading="lazy">
+                <img src="<?= h($news['image_path']) ?>" class="card-img" alt="<?= h($news['titre']) ?>">
                 <div class="card-body">
-                    <span class="card-date"><?= formatDate($news['date']) ?></span>
+                    <span class="card-date"><?= formatDateFR($news['date_publication']) ?></span>
                     <h3 class="card-title"><?= h($news['titre']) ?></h3>
                     <p class="card-text"><?= h($news['contenu']) ?></p>
                 </div>
@@ -48,7 +48,7 @@ $actualites = $stmt->fetchAll();
         <?php endif; ?>
 
         <?php if (empty($actualites)): ?>
-            <p style="text-align: center; color: var(--color-text-muted);"><?= __('no_news') ?></p>
+            <p style="text-align: center; color: var(--color-text-muted);">Aucune actualité pour le moment.</p>
         <?php endif; ?>
     </div>
 </section>

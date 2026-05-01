@@ -34,8 +34,8 @@ CREATE TABLE `actualites` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `titre` varchar(255) NOT NULL,
   `contenu` text NOT NULL,
-  `date` date NOT NULL,
-  `image` varchar(255) DEFAULT 'public/images/placeholder.jpg',
+  `image_path` varchar(255) DEFAULT 'public/images/placeholder.jpg',
+  `date_publication` date NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -46,10 +46,9 @@ CREATE TABLE `actualites` (
 CREATE TABLE `annonces` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `titre` varchar(255) NOT NULL,
-  `description` text NOT NULL,
-  `date` date NOT NULL,
-  `image` varchar(255) DEFAULT NULL,
+  `contenu` text NOT NULL,
   `is_pinned` tinyint(1) DEFAULT 0,
+  `date_expiration` date NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -59,10 +58,9 @@ CREATE TABLE `annonces` (
 -- --------------------------------------------------------
 CREATE TABLE `galerie` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `image` varchar(255) NOT NULL,
-  `description` text DEFAULT NULL,
-  `date` date NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `titre_image` varchar(255) NOT NULL,
+  `image_path` varchar(255) NOT NULL,
+  `upload_date` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
