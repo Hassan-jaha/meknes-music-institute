@@ -1,24 +1,50 @@
 <?php
 // جلب البيانات من بيئة Railway
-$host     = getenv('MYSQLHOST');
-$db_name  = getenv('MYSQLDATABASE');
-$user     = getenv('MYSQLUSER');
-$password = getenv('MYSQLPASSWORD');
-$port     = getenv('MYSQLPORT') ?: '3306';
+// config/database.php
 
-// إذا لم يجد المتغيرات (هذا يعني أننا في Local) نستخدم بيانات اللوكال
-if (!$host) {
-    $host     = '127.0.0.1'; // استخدم 127.0.0.1 لتفادي مشاكل الـ Socket
-    $db_name  = 'institut_musique';
-    $user     = 'root';
-    $password = ''; 
+// Détecter si on est en local (localhost ou 127.0.0.1)
+$is_local = in_array($_SERVER['HTTP_HOST'] ?? '', ['localhost', '127.0.0.1']);
+
+if ($is_local) {
+    // Activer l'affichage des erreurs uniquement en local
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+
+    // Paramètres locaux
+    $host = '127.0.0.1';
+    $db_name = 'institut_musique';
+    $user = 'root';
+    $password = '';
+    $port = '3306';
+} else {
+    // Désactiver les erreurs en production (Railway)
+    ini_set('display_errors', 0);
+    error_reporting(0);
+
+    // Paramètres Railway
+    $host     = getenv('MYSQLHOST') ?: 'localhost';
+    $db_name  = getenv('MYSQLDATABASE') ?: 'railway';
+    $user     = getenv('MYSQLUSER') ?: 'root';
+    $password = getenv('MYSQLPASSWORD') ?: '';
+    $port     = getenv('MYSQLPORT') ?: '3306';
 }
 
-try {
-    // الاتصال مع تحديد المنفذ والمضيف بدقة
-    $pdo = new PDO("mysql:host=$host;port=$port;dbname=$db_name;charset=utf8", $user, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    // إظهار رسالة خطأ واضحة في حالة الفشل
-    die("خطأ في الاتصال: " . $e->getMessage());
+function getDBConnection() {
+    global $host, $port, $db_name, $user, $password;
+    
+    // Pattern Singleton basique
+    static $pdo = null;
+    
+    if ($pdo === null) {
+        try {
+            $pdo = new PDO("mysql:host=$host;port=$port;dbname=$db_name;charset=utf8", $user, $password);
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            die("خطأ في الاتصال: " . $e->getMessage());
+        }
+    }
+    
+    return $pdo;
 }

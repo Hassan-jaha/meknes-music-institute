@@ -131,33 +131,28 @@ function resizeImage($sourcePath, $destPath, $maxWidth, $maxHeight) {
     return true;
 }
 
+// Définition de BASE_URL pour gérer les chemins absolus (Local vs Production)
+if (!defined('BASE_URL')) {
+    $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
+    $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+    
+    if (in_array($host, ['localhost', '127.0.0.1'])) {
+        define('BASE_URL', $protocol . '://' . $host . '/institue music/');
+    } else {
+        define('BASE_URL', $protocol . '://' . $host . '/');
+    }
+}
+
 /**
- * Retourne le chemin correct vers un asset (image, css, js)
- * Gère automatiquement le préfixe ../ selon l'emplacement
+ * Retourne le chemin absolu vers un asset (image, css, js)
+ * Gère automatiquement l'environnement Local vs Railway
  */
 function asset($path) {
     // Si le chemin commence déjà par http, on le laisse
     if (strpos($path, 'http') === 0) return $path;
     
-    // Détecter si on est dans le dossier admin ou un sous-dossier d'admin
-    $current_path = $_SERVER['PHP_SELF'];
-    $is_admin = (strpos($current_path, '/admin/') !== false);
+    // Nettoyer le chemin (retirer le / initial s'il existe pour éviter le double slash)
+    $clean_path = ltrim($path, '/');
     
-    // Si on est dans admin/actualites/ ou admin/annonces/, on doit monter de 2 niveaux
-    $depth = substr_count(trim($current_path, '/'), '/');
-    
-    // Pour simplifier : si on est dans admin, on rajoute ../ autant de fois que nécessaire
-    $prefix = '';
-    if ($is_admin) {
-        if (strpos($current_path, '/admin/actualites/') !== false || 
-            strpos($current_path, '/admin/annonces/') !== false ||
-            strpos($current_path, '/admin/galerie/') !== false ||
-            strpos($current_path, '/admin/messages/') !== false) {
-            $prefix = '../../';
-        } else {
-            $prefix = '../';
-        }
-    }
-    
-    return $prefix . $path;
+    return BASE_URL . $clean_path;
 }
