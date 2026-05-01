@@ -136,7 +136,8 @@ if (!defined('BASE_URL')) {
     $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
     $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
     
-    if (in_array($host, ['localhost', '127.0.0.1'])) {
+    // Si l'URL commence par /institue music/ (cas de XAMPP), on l'inclut dans la base
+    if (strpos($_SERVER['REQUEST_URI'] ?? '', '/institue music/') === 0) {
         define('BASE_URL', $protocol . '://' . $host . '/institue music/');
     } else {
         define('BASE_URL', $protocol . '://' . $host . '/');

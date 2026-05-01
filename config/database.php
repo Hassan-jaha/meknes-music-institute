@@ -3,7 +3,8 @@
 // config/database.php
 
 // Détecter si on est en local (localhost ou 127.0.0.1)
-$is_local = in_array($_SERVER['HTTP_HOST'] ?? '', ['localhost', '127.0.0.1']);
+$http_host = $_SERVER['HTTP_HOST'] ?? '';
+$is_local = (strpos($http_host, 'localhost') !== false || strpos($http_host, '127.0.0.1') !== false);
 
 if ($is_local) {
     // Activer l'affichage des erreurs uniquement en local
