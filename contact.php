@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="container" style="max-width: 900px;">
         <h2 class="section-title"><?= __('contact_title') ?></h2>
         
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 3rem;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; margin-top: 3rem;">
             <!-- Infos de contact -->
             <div>
                 <h3><?= __('contact_info') ?></h3>

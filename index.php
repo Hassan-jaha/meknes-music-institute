@@ -69,7 +69,7 @@ $latest_news = $stmt->fetchAll();
                 </li>
             </ul>
         </div>
-        <div style="flex: 1; min-width: 300px; border-radius: 8px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); position: relative; padding-bottom: 28%; height: 0;">
+        <div style="flex: 1; min-width: 300px; border-radius: 8px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); position: relative; padding-bottom: 56.25%; height: 0;">
             <div id="main-player" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></div>
         </div>
     </div>
