@@ -8,11 +8,11 @@
             <p style="font-size:0.9rem;color:#ecf0f1;opacity:0.9; margin:0.5rem 0;">Premier établissement d'enseignement musical à Meknès, dédié à la formation des futurs talents.</p>
         </div>
         <div style="flex:1;min-width:150px;">
-                        <div style="margin-top:0.5rem; font-size:0.9rem;">
-                <a href="index.php" style="color:#ecf0f1;opacity:0.8; margin-right:10px;"><?php echo __('nav_home'); ?></a>
-                <a href="actualites.php" style="color:#ecf0f1;opacity:0.8; margin-right:10px;"><?php echo __('nav_news'); ?></a>
-                <a href="annonces.php" style="color:#ecf0f1;opacity:0.8; margin-right:10px;"><?php echo __('nav_announcements'); ?></a>
-                <a href="galerie.php" style="color:#ecf0f1;opacity:0.8; margin-right:10px;"><?php echo __('nav_gallery'); ?></a>
+            <div style="margin-top:0.5rem; font-size:0.9rem; display: flex; flex-direction: column; gap: 8px;">
+                <a href="index.php" style="color:#ecf0f1;opacity:0.8;"><?php echo __('nav_home'); ?></a>
+                <a href="actualites.php" style="color:#ecf0f1;opacity:0.8;"><?php echo __('nav_news'); ?></a>
+                <a href="annonces.php" style="color:#ecf0f1;opacity:0.8;"><?php echo __('nav_announcements'); ?></a>
+                <a href="galerie.php" style="color:#ecf0f1;opacity:0.8;"><?php echo __('nav_gallery'); ?></a>
             </div>
         </div>
         <div style="flex:1;min-width:200px;">
@@ -25,7 +25,7 @@
         <!-- Location map column -->
         <div style="flex:1;min-width:200px;">
             <h4 style="margin-bottom:0.5rem;">Location</h4>
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3402.1234567890123!2d-5.123456!3d34.567890!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xabcdef123456789!2sInstitut%20de%20Musique%20de%20Mekn%C3%A8s!5e0!3m2!1sen!2sma!4v1700000000000" width="100%" height="200" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            <iframe src= "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d23974.722878822897!2d-5.547448!3d33.899532!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xda044d9690cd955%3A0x3b79f498c2a485d3!2sMusic%20Institute%20of%20Meknes!5e1!3m2!1sfr!2sma!4v1777651238243!5m2!1sfr!2sma"  width="100%" height="200" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
         </div>
     </div>
     <div style="margin-top:2rem;text-align:center;font-size:0.8rem;opacity:0.6;">
