@@ -19,7 +19,7 @@ try {
 <div class="grid">
     <?php foreach ($images as $img): ?>
     <div class="card">
-        <img src="../../<?= h($img['image']) ?>" class="card-img" alt="<?= h($img['description']) ?>">
+        <img src="<?= asset(h($img['image'])) ?>" class="card-img" alt="<?= h($img['description']) ?>">
         <tr style="background: var(--color-blue-deep); color: white;">
             <th style="padding: 10px; text-align: left;"><?= __('admin_image') ?></th>
             <th style="padding: 10px; text-align: left;"><?= __('contact_form_message') ?></th>

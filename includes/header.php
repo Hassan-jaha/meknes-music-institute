@@ -77,7 +77,9 @@ try {
                 </li>
 
                 <?php if(isset($_SESSION['admin_id'])): ?>
-                    <li><a href="admin/dashboard.php"><?= __('nav_admin') ?></a></li>
+                    <li><a href="admin/dashboard.php" class="btn btn-primary" style="margin-left: 10px;"><?= __('nav_admin') ?></a></li>
+                <?php else: ?>
+                    <li><a href="admin/login.php" style="margin-left: 10px; color: var(--color-blue-deep); font-weight: 600;"><?= __('nav_admin') ?></a></li>
                 <?php endif; ?>
             </ul>
         </nav>

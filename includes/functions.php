@@ -70,6 +70,11 @@ function truncateText($text, $length = 100) {
  * @return bool
  */
 function resizeImage($sourcePath, $destPath, $maxWidth, $maxHeight) {
+    // Vérifier si l'extension GD est installée
+    if (!function_exists('imagecreatefromjpeg')) {
+        return copy($sourcePath, $destPath);
+    }
+
     $info = getimagesize($sourcePath);
     if (!$info) return false;
 
@@ -83,15 +88,16 @@ function resizeImage($sourcePath, $destPath, $maxWidth, $maxHeight) {
     }
 
     switch ($type) {
-        case IMAGETYPE_JPEG: $src = imagecreatefromjpeg($sourcePath); break;
-        case IMAGETYPE_PNG:  $src = imagecreatefrompng($sourcePath); break;
-        case IMAGETYPE_WEBP: $src = imagecreatefromwebp($sourcePath); break;
-        default: return false;
+        case IMAGETYPE_JPEG: $src = @imagecreatefromjpeg($sourcePath); break;
+        case IMAGETYPE_PNG:  $src = @imagecreatefrompng($sourcePath); break;
+        case IMAGETYPE_WEBP: $src = @imagecreatefromwebp($sourcePath); break;
+        default: return copy($sourcePath, $destPath);
     }
+
+    if (!$src) return copy($sourcePath, $destPath);
 
     $dst = imagecreatetruecolor($maxWidth, $maxHeight);
     
-    // Transparence pour PNG/WEBP
     if ($type == IMAGETYPE_PNG || $type == IMAGETYPE_WEBP) {
         imagealphablending($dst, false);
         imagesavealpha($dst, true);
@@ -108,4 +114,35 @@ function resizeImage($sourcePath, $destPath, $maxWidth, $maxHeight) {
     imagedestroy($src);
     imagedestroy($dst);
     return true;
+}
+
+/**
+ * Retourne le chemin correct vers un asset (image, css, js)
+ * Gère automatiquement le préfixe ../ selon l'emplacement
+ */
+function asset($path) {
+    // Si le chemin commence déjà par http, on le laisse
+    if (strpos($path, 'http') === 0) return $path;
+    
+    // Détecter si on est dans le dossier admin ou un sous-dossier d'admin
+    $current_path = $_SERVER['PHP_SELF'];
+    $is_admin = (strpos($current_path, '/admin/') !== false);
+    
+    // Si on est dans admin/actualites/ ou admin/annonces/, on doit monter de 2 niveaux
+    $depth = substr_count(trim($current_path, '/'), '/');
+    
+    // Pour simplifier : si on est dans admin, on rajoute ../ autant de fois que nécessaire
+    $prefix = '';
+    if ($is_admin) {
+        if (strpos($current_path, '/admin/actualites/') !== false || 
+            strpos($current_path, '/admin/annonces/') !== false ||
+            strpos($current_path, '/admin/galerie/') !== false ||
+            strpos($current_path, '/admin/messages/') !== false) {
+            $prefix = '../../';
+        } else {
+            $prefix = '../';
+        }
+    }
+    
+    return $prefix . $path;
 }

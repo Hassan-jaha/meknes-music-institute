@@ -53,7 +53,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error = "Extensions autorisées : " . implode(',', $allowedfileExtensions);
         }
     } else {
-        $error = "Veuillez sélectionner une image.";
+        $uploadError = $_FILES['image']['error'] ?? 'No file';
+        switch ($uploadError) {
+            case UPLOAD_ERR_INI_SIZE: $error = "L'image est trop lourde pour le serveur (limite PHP)."; break;
+            case UPLOAD_ERR_PARTIAL: $error = "L'image n'a été que partiellement téléchargée."; break;
+            case UPLOAD_ERR_NO_FILE: $error = "Aucun fichier n'a été sélectionné."; break;
+            default: $error = "Erreur technique d'upload (Code: $uploadError)."; break;
+        }
     }
 }
 ?>

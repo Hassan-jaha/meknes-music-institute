@@ -15,8 +15,8 @@ $images = $pdo->query("SELECT * FROM galerie ORDER BY date DESC")->fetchAll();
 
         <div class="grid">
             <?php foreach ($images as $img): ?>
-            <a href="<?= h($img['image']) ?>" class="card gallery-item" style="cursor: pointer;">
-                <img src="<?= h($img['image']) ?>" class="card-img" alt="<?= h($img['description']) ?>" loading="lazy">
+            <a href="<?= asset(h($img['image'])) ?>" class="card gallery-item" style="cursor: pointer;">
+                <img src="<?= asset(h($img['image'])) ?>" class="card-img" alt="<?= h($img['description']) ?>" loading="lazy">
                 <div class="card-body" style="text-align: center; padding: 10px;">
                     <h4 style="margin: 0; font-size: 1rem; color: var(--color-blue-primary);"><?= h($img['description']) ?></h4>
                 </div>

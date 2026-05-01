@@ -1,14 +1,14 @@
 <?php
 // admin/includes/header.php
+require_once __DIR__ . '/../../config/database.php';
 require_once __DIR__ . '/../../includes/functions.php';
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-// Détection dynamique du préfixe pour les liens
-$current_dir = basename(dirname($_SERVER['PHP_SELF']));
-$path_prefix = ($current_dir == 'admin') ? '' : '../';
-$root_prefix = ($current_dir == 'admin') ? '../' : '../../';
+
+$path_prefix = (basename(dirname($_SERVER['PHP_SELF'])) === 'admin') ? '' : '../';
+$root_prefix = (basename(dirname($_SERVER['PHP_SELF'])) === 'admin') ? '../' : '../../';
 
 if (!isset($_SESSION['admin_id'])) {
     header("Location: {$path_prefix}login.php");
@@ -41,9 +41,8 @@ if (!isset($_SESSION['admin_id'])) {
             <a href="<?= $path_prefix ?>galerie/index.php"><?= __('nav_gallery') ?></a>
             <a href="<?= $path_prefix ?>messages/index.php"><?= __('admin_manage_messages') ?></a>
             <a href="<?= $root_prefix ?>index.php" target="_blank">🌐 <?= __('admin_back_to_site') ?></a>
-            <a href="<?= $path_prefix ?>logout.php" style="color: #ff4d4d;"><?= __('admin_logout') ?></a>
+            <a href="<?= $path_prefix ?>logout.php" style="color: #ff7675;"><?= __('admin_logout') ?></a>
         </div>
     </div>
 </nav>
-<main class="section">
-    <div class="container">
+<main class="container" style="margin-top: 2rem;">

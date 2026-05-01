@@ -24,8 +24,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $dest_path = '../../public/uploads/' . $newFileName;
             if (resizeImage($fileTmpPath, $dest_path, 1200, 1200)) {
                 $image_path = 'public/uploads/' . $newFileName;
+            } else {
+                $error = "Impossible de redimensionner l'image. Vérifiez l'extension GD.";
             }
+        } else {
+            $error = "Format d'image non supporté.";
         }
+    } elseif (isset($_FILES['image']) && $_FILES['image']['error'] !== UPLOAD_ERR_NO_FILE) {
+        $error = "Erreur d'upload (Code: " . $_FILES['image']['error'] . ")";
     }
 
     if ($titre && $contenu && $date) {

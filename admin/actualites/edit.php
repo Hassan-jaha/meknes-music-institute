@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
     <div style="margin-bottom: 15px;">
         <label style="display: block; margin-bottom: 5px;">Image actuelle</label>
-        <img src="../../<?= h($actualite['image']) ?>" style="height: 100px; display: block; margin-bottom: 10px;">
+        <img src="<?= asset(h($actualite['image'])) ?>" style="height: 100px; display: block; margin-bottom: 10px;">
         <input type="file" name="image" accept="image/*" style="width: 100%; padding: 8px;">
     </div>
     <div style="margin-bottom: 15px;">
