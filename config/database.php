@@ -1,4 +1,9 @@
 <?php
+// تفعيل عرض الأخطاء مؤقتاً لتشخيص المشكلة (White Page)
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 // جلب الإعدادات من نظام Railway تلقائياً
 $host     = getenv('MYSQLHOST') ?: 'localhost';
 $db_name  = getenv('MYSQLDATABASE') ?: 'institut_musique';
