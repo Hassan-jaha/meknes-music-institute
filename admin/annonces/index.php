@@ -18,7 +18,7 @@ $annonces = $pdo->query("SELECT * FROM annonces ORDER BY created_at DESC")->fetc
         <tr style="background: var(--color-blue-primary); color: white;">
             <th style="padding: 10px; text-align: left;"><?= __('admin_table_title') ?></th>
             <th style="padding: 10px; text-align: center;"><?= __('admin_pinned') ?></th>
-            <th style="padding: 10px; text-align: left;"><?= __('contact_hours') ?? 'Expiration' ?></th>
+            <th style="padding: 10px; text-align: left;"><?= __('expires_on') ?></th>
             <th style="padding: 10px; text-align: right;"><?= __('admin_table_actions') ?></th>
         </tr>
     </thead>

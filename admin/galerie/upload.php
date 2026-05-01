@@ -57,23 +57,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<h2>Ajouter une Photo</h2>
+<h2><?= __('admin_add_new') ?></h2>
 
 <?php if ($error): ?><div style="color: red; margin-bottom: 1rem;"><?= h($error) ?></div><?php endif; ?>
 <?php if ($success): ?><div style="color: green; margin-bottom: 1rem;"><?= h($success) ?></div><?php endif; ?>
 
 <form method="POST" action="" enctype="multipart/form-data" style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
     <div style="margin-bottom: 15px;">
-        <label style="display: block; margin-bottom: 5px;">Titre de l'image (optionnel)</label>
+        <label style="display: block; margin-bottom: 5px;"><?= __('form_label_title') ?> (<?= __('form_cancel') ?>)</label>
         <input type="text" name="titre" style="width: 100%; padding: 8px;">
     </div>
     <div style="margin-bottom: 15px;">
-        <label style="display: block; margin-bottom: 5px;">Sélectionner l'image *</label>
+        <label style="display: block; margin-bottom: 5px;"><?= __('admin_image') ?> *</label>
         <input type="file" name="image" required accept="image/*" style="width: 100%; padding: 8px;">
-        <small style="color: var(--color-text-muted);">Formats acceptés : JPG, PNG, WEBP. Redimensionnement automatique.</small>
     </div>
-    <button type="submit" class="btn btn-primary">Télécharger</button>
-    <a href="index.php" style="margin-left: 15px; color: var(--color-blue-primary);">Retour</a>
+    <button type="submit" class="btn btn-primary"><?= __('form_save') ?></button>
+    <a href="index.php" style="margin-left: 15px; color: var(--color-blue-primary);"><?= __('form_cancel') ?></a>
 </form>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>

@@ -12,14 +12,14 @@ $id = $_GET['id'] ?? 0;
 if ($id) {
     $pdo = getDBConnection();
     
-    // Récupérer le chemin du fichier pour le supprimer
-    $stmt = $pdo->prepare("SELECT image FROM galerie WHERE id = :id");
+    // Récupérer le chemin du fichier pour le supprimer physiquement
+    $stmt = $pdo->prepare("SELECT image_path FROM galerie WHERE id = :id");
     $stmt->execute(['id' => $id]);
     $img = $stmt->fetch();
     
     if ($img) {
-        $fullPath = '../../' . $img['image'];
-        if (file_exists($fullPath)) {
+        $fullPath = '../../' . $img['image_path'];
+        if (file_exists($fullPath) && is_file($fullPath)) {
             unlink($fullPath);
         }
         
