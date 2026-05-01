@@ -27,16 +27,16 @@ $latest_news = $stmt->fetchAll();
 <!-- Hero Section -->
 <section class="hero">
     <div class="container hero-content">
-        <h1>L'Héritage Musical au Cœur du Digital</h1>
-        <p>Découvrez l'Institut de Musique, un lieu où la tradition marocaine rencontre l'innovation moderne pour former les talents de demain.</p>
-        <a href="galerie.php" class="btn btn-primary">Explorer l'Institut</a>
+        <h1><?= __('hero_title') ?></h1>
+        <p><?= __('hero_subtitle') ?></p>
+        <a href="galerie.php" class="btn btn-primary"><?= __('nav_gallery') ?></a>
     </div>
 </section>
 
 <!-- Latest News Section -->
 <section class="section">
     <div class="container">
-        <h2 class="section-title">Dernières Actualités</h2>
+        <h2 class="section-title"><?= __('section_latest_news') ?></h2>
         <div class="grid">
             <?php foreach ($latest_news as $news): ?>
             <article class="card">
@@ -45,13 +45,13 @@ $latest_news = $stmt->fetchAll();
                     <span class="card-date"><?= formatDate($news['date_publication']) ?></span>
                     <h3 class="card-title"><?= h($news['titre']) ?></h3>
                     <p class="card-text"><?= nl2br(h(truncateText($news['contenu'], 300))) ?></p>
-                    <a href="actualites.php" style="display: inline-block; margin-top: 1rem; font-weight: 600;">Lire la suite &rarr;</a>
+                    <a href="actualites.php" style="display: inline-block; margin-top: 1rem; font-weight: 600;"><?= __('read_more') ?> &rarr;</a>
                 </div>
             </article>
             <?php endforeach; ?>
         </div>
         <div style="text-align: center; margin-top: 3rem;">
-            <a href="actualites.php" class="btn btn-primary">Toutes les actualités</a>
+            <a href="actualites.php" class="btn btn-primary"><?= __('page_news_title') ?></a>
         </div>
     </div>
 </section>
@@ -60,12 +60,12 @@ $latest_news = $stmt->fetchAll();
 <section class="section" style="background-color: var(--color-bg-light); border-top: 1px solid #eee; border-bottom: 1px solid #eee;">
     <div class="container" style="display: flex; flex-wrap: wrap; align-items: center; gap: 40px;">
         <div style="flex: 1; min-width: 300px;">
-            <h2 style="font-size: 2.5rem;">Un Enseignement d'Excellence</h2>
-            <p>Notre institut propose des cursus complets en musique classique et andalouse, encadrés par des maîtres renommés. Nous allions les méthodes ancestrales aux outils numériques pour une expérience d'apprentissage unique.</p>
+            <h2 style="font-size: 2.5rem;"><?= __('section_excellence') ?></h2>
+            <p><?= __('excellence_text') ?></p>
             <ul style="margin-top: 1.5rem; list-style: none;">
-                <li style="margin-bottom: 10px;">✨ Instruments Classiques & Traditionnels</li>
-                <li style="margin-bottom: 10px;">✨ Théorie Musicale & Composition</li>
-                <li style="margin-bottom: 10px;">✨ Ateliers de Production Digitale</li>
+                <li style="margin-bottom: 10px;">✨ <?= __('excellence_list_1') ?></li>
+                <li style="margin-bottom: 10px;">✨ <?= __('excellence_list_2') ?></li>
+                <li style="margin-bottom: 10px;">✨ <?= __('excellence_list_3') ?></li>
             </ul>
         </div>
         <div style="flex: 1; min-width: 300px; background: var(--color-blue-primary); height: 300px; border-radius: 8px; display: flex; align-items: center; justify-content: center; background-image: url('public/images/patterns/zellige-bg.svg'); background-size: 80px;">

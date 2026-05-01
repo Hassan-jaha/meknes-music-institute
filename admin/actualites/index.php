@@ -9,16 +9,16 @@ $actualites = $pdo->query("SELECT * FROM actualites ORDER BY date_publication DE
 ?>
 
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-    <h2>Gestion des Actualités</h2>
-    <a href="create.php" class="btn btn-primary">+ Ajouter une actualité</a>
+    <h2><?= __('admin_manage_news') ?></h2>
+    <a href="create.php" class="btn btn-primary">+ <?= __('admin_add_new') ?></a>
 </div>
 
 <table style="width: 100%; border-collapse: collapse; background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
     <thead>
         <tr style="background: var(--color-blue-primary); color: white;">
-            <th style="padding: 10px; text-align: left;">Titre</th>
-            <th style="padding: 10px; text-align: left;">Date</th>
-            <th style="padding: 10px; text-align: right;">Actions</th>
+            <th style="padding: 10px; text-align: left;"><?= __('admin_table_title') ?></th>
+            <th style="padding: 10px; text-align: left;"><?= __('admin_table_date') ?></th>
+            <th style="padding: 10px; text-align: right;"><?= __('admin_table_actions') ?></th>
         </tr>
     </thead>
     <tbody>
@@ -27,8 +27,8 @@ $actualites = $pdo->query("SELECT * FROM actualites ORDER BY date_publication DE
             <td style="padding: 10px;"><?= h($actu['titre']) ?></td>
             <td style="padding: 10px;"><?= formatDate($actu['date_publication']) ?></td>
             <td style="padding: 10px; text-align: right;">
-                <a href="edit.php?id=<?= $actu['id'] ?>" style="color: var(--color-blue-accent); margin-right: 10px;">Modifier</a>
-                <a href="delete.php?id=<?= $actu['id'] ?>" style="color: var(--color-red-accent);" onclick="return confirm('Êtes-vous sûr ?');">Supprimer</a>
+                <a href="edit.php?id=<?= $actu['id'] ?>" style="color: var(--color-blue-accent); margin-right: 10px;"><?= __('admin_edit') ?></a>
+                <a href="delete.php?id=<?= $actu['id'] ?>" style="color: var(--color-red-accent);" onclick="return confirm('<?= __('admin_confirm_delete') ?>');"><?= __('admin_delete') ?></a>
             </td>
         </tr>
         <?php endforeach; ?>

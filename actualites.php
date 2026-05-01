@@ -24,7 +24,7 @@ $actualites = $stmt->fetchAll();
 
 <section class="section">
     <div class="container">
-        <h2 class="section-title">Toutes les Actualités</h2>
+        <h2 class="section-title"><?= __('page_news_title') ?></h2>
         
         <div class="grid">
             <?php foreach ($actualites as $news): ?>
@@ -48,7 +48,7 @@ $actualites = $stmt->fetchAll();
         <?php endif; ?>
 
         <?php if (empty($actualites)): ?>
-            <p style="text-align: center; color: var(--color-text-muted);">Aucune actualité pour le moment.</p>
+            <p style="text-align: center; color: var(--color-text-muted);"><?= __('no_news') ?></p>
         <?php endif; ?>
     </div>
 </section>
