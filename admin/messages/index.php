@@ -29,7 +29,7 @@ try {
 
 <?php if (empty($messages)): ?>
     <div class="card" style="padding: 2rem; text-align: center;">
-        <p><?= __('no_images') ?> (Aucun message)</p>
+        <p><?= __('no_messages') ?></p>
     </div>
 <?php else: ?>
     <div style="display: flex; flex-direction: column; gap: 15px;">
@@ -42,7 +42,7 @@ try {
                         <small style="color: var(--color-text-muted);"><?= h($msg['email']) ?></small>
                     </div>
                     <div style="text-align: right;">
-                        <span style="font-size: 0.8rem; color: var(--color-text-muted);"><?= $msg['date_envoi'] ?></span>
+                        <span style="font-size: 0.8rem; color: var(--color-text-muted);"><?= formatDate($msg['date_envoi']) ?></span>
                         <br>
                         <a href="?delete=<?= $msg['id'] ?>" class="btn" style="background: #ff4d4d; color: white; padding: 5px 10px; font-size: 0.8rem; margin-top: 5px;" onclick="return confirm('<?= __('admin_confirm_delete') ?>')">
                             <?= __('admin_delete') ?>
