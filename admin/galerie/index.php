@@ -13,6 +13,12 @@ $images = $pdo->query("SELECT * FROM galerie ORDER BY upload_date DESC")->fetchA
     <a href="upload.php" class="btn btn-primary">+ <?= __('admin_add_new') ?></a>
 </div>
 
+<?php if (isset($_GET['success'])): ?>
+    <div style="background: #27ae60; color: white; padding: 10px; border-radius: 4px; margin-bottom: 2rem;">
+        ✅ Opération réussie !
+    </div>
+<?php endif; ?>
+
 <div class="grid">
     <?php foreach ($images as $img): ?>
     <div class="card">

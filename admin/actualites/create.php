@@ -5,7 +5,6 @@ require_once __DIR__ . '/../../includes/functions.php';
 require_once __DIR__ . '/../includes/header.php';
 
 $error = '';
-$success = isset($_GET['success']) ? "Actualité ajoutée avec succès !" : '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $titre = trim($_POST['titre'] ?? '');
@@ -17,26 +16,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             $pdo = getDBConnection();
             
-            // Gestion de l'image (si fournie)
+            // Validation et gestion de l'image
             if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-                $fileTmpPath = $_FILES['image']['tmp_name'];
+                $fileSize = $_FILES['image']['size'];
                 $fileName = $_FILES['image']['name'];
                 $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-                $newFileName = md5(time() . $fileName) . '.' . $fileExtension;
-                $dest_path = '../../public/uploads/' . $newFileName;
-                
-                if (resizeImage($fileTmpPath, $dest_path, 800, 600)) {
-                    $image_path = 'public/uploads/' . $newFileName;
+                $allowedExtensions = ['jpg', 'jpeg', 'png'];
+
+                if (!in_array($fileExtension, $allowedExtensions)) {
+                    $error = "Format non supporté (Uniquement JPG, JPEG, PNG).";
+                } elseif ($fileSize > 5 * 1024 * 1024) {
+                    $error = "L'image est trop lourde (Maximum 5 Mo).";
+                } else {
+                    $newFileName = md5(time() . $fileName) . '.' . $fileExtension;
+                    $dest_path = '../../public/uploads/' . $newFileName;
+                    if (resizeImage($_FILES['image']['tmp_name'], $dest_path, 800, 600)) {
+                        $image_path = 'public/uploads/' . $newFileName;
+                    }
                 }
             }
 
-            $stmt = $pdo->prepare("INSERT INTO actualites (titre, contenu, image_path, date_publication) VALUES (:titre, :contenu, :image_path, :date_publication)");
-            if ($stmt->execute(['titre' => $titre, 'contenu' => $contenu, 'image_path' => $image_path, 'date_publication' => $date_publication])) {
-                // Redirection pour éviter le renvoi du formulaire et permettre un nouvel ajout
-                header("Location: create.php?success=1");
-                exit;
-            } else {
-                $error = "Erreur lors de l'ajout.";
+            if (!$error) {
+                $stmt = $pdo->prepare("INSERT INTO actualites (titre, contenu, image_path, date_publication) VALUES (:titre, :contenu, :image_path, :date_publication)");
+                if ($stmt->execute(['titre' => $titre, 'contenu' => $contenu, 'image_path' => $image_path, 'date_publication' => $date_publication])) {
+                    // Redirection automatique vers l'index après succès
+                    header("Location: index.php?success=added");
+                    exit;
+                } else {
+                    $error = "Erreur lors de l'enregistrement.";
+                }
             }
         } catch (PDOException $e) {
             $error = "Erreur Base de données : " . $e->getMessage();
@@ -47,10 +55,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<h2><?= __('admin_add_new') ?> (<?= __('nav_news') ?>)</h2>
+<div style="max-width: 800px; margin: 0 auto 2rem auto; display: flex; justify-content: space-between; align-items: center;">
+    <h2><?= __('admin_add_new') ?> (<?= __('nav_news') ?>)</h2>
+    <a href="index.php" class="btn"><?= __('form_cancel') ?></a>
+</div>
 
-<?php if ($error): ?><div style="color: white; background: #e74c3c; padding: 10px; margin-bottom: 1rem; border-radius: 4px;"><?= h($error) ?></div><?php endif; ?>
-<?php if ($success): ?><div style="color: white; background: #2ecc71; padding: 10px; margin-bottom: 1rem; border-radius: 4px;"><?= h($success) ?></div><?php endif; ?>
+<?php if ($error): ?><div style="color: white; background: #e74c3c; padding: 10px; margin-bottom: 1rem; border-radius: 4px; max-width: 800px; margin-left: auto; margin-right: auto;"><?= h($error) ?></div><?php endif; ?>
 
 <form method="POST" action="" enctype="multipart/form-data" style="background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-width: 800px; margin: 0 auto;">
     <div style="margin-bottom: 15px;">
@@ -62,15 +72,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="date" name="date_publication" required style="width: 100%; padding: 8px;" value="<?= date('Y-m-d') ?>">
     </div>
     <div style="margin-bottom: 15px;">
-        <label style="display: block; margin-bottom: 5px;"><?= __('admin_image') ?> (<?= __('form_cancel') ?>)</label>
-        <input type="file" name="image" accept="image/*" style="width: 100%; padding: 8px;">
+        <label style="display: block; margin-bottom: 5px;"><?= __('admin_image') ?> (Max 5Mo, JPG/PNG)</label>
+        <input type="file" name="image" accept="image/png, image/jpeg" style="width: 100%; padding: 8px;">
     </div>
     <div style="margin-bottom: 15px;">
         <label style="display: block; margin-bottom: 5px;"><?= __('form_label_content') ?> *</label>
         <textarea name="contenu" rows="8" required style="width: 100%; padding: 8px;"></textarea>
     </div>
     <button type="submit" class="btn btn-primary"><?= __('form_save') ?></button>
-    <a href="index.php" style="margin-left: 15px; color: var(--color-blue-primary);"><?= __('form_cancel') ?></a>
 </form>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>

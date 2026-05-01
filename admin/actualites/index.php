@@ -13,6 +13,12 @@ $actualites = $pdo->query("SELECT * FROM actualites ORDER BY date_publication DE
     <a href="create.php" class="btn btn-primary">+ <?= __('admin_add_new') ?></a>
 </div>
 
+<?php if (isset($_GET['success'])): ?>
+    <div style="background: #27ae60; color: white; padding: 10px; border-radius: 4px; margin-bottom: 2rem;">
+        ✅ Opération réussie !
+    </div>
+<?php endif; ?>
+
 <table style="width: 100%; border-collapse: collapse; background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
     <thead>
         <tr style="background: var(--color-blue-primary); color: white;">
