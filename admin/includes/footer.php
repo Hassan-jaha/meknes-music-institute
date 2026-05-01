@@ -1,11 +1,8 @@
-<?php
-// admin/includes/footer.php
-?>
 </main>
 
-<footer style="margin-top: auto; padding: 2rem 0; background: #f8f9fa; border-top: 1px solid #ddd; text-align: center; color: var(--color-text-muted); font-size: 0.8rem; width: 100%;">
+<footer style="margin-top: 3rem; padding: 1.5rem 0; background: white; border-top: 1px solid #e1e8ed; text-align: center; color: #7f8c8d; font-size: 0.85rem;">
     <div class="container">
-        &copy; <?= date('Y') ?> - <?= __('admin_manage_news') ?> | <?= __('site_name') ?>
+        &copy; <?= date('Y') ?> &bull; <strong><?= __('site_name') ?></strong> &bull; <?= __('admin_dashboard') ?>
     </div>
 </footer>
 

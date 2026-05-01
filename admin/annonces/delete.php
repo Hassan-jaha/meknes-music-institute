@@ -10,9 +10,14 @@ if (!isset($_SESSION['admin_id'])) {
 
 $id = $_GET['id'] ?? 0;
 if ($id) {
-    $pdo = getDBConnection();
-    $stmt = $pdo->prepare("DELETE FROM annonces WHERE id = :id");
-    $stmt->execute(['id' => $id]);
+    try {
+        $pdo = getDBConnection();
+        $stmt = $pdo->prepare("DELETE FROM annonces WHERE id = :id");
+        $stmt->execute(['id' => $id]);
+        $_SESSION['flash_success'] = "Annonce supprimée avec succès !";
+    } catch (PDOException $e) {
+        $_SESSION['flash_error'] = "Erreur lors de la suppression : " . $e->getMessage();
+    }
 }
 
 header("Location: index.php");

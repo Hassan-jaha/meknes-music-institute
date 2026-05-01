@@ -13,32 +13,31 @@ $actualites = $pdo->query("SELECT * FROM actualites ORDER BY date_publication DE
     <a href="create.php" class="btn btn-primary">+ <?= __('admin_add_new') ?></a>
 </div>
 
-<?php if (isset($_GET['success'])): ?>
-    <div style="background: #27ae60; color: white; padding: 10px; border-radius: 4px; margin-bottom: 2rem;">
-        ✅ Opération réussie !
-    </div>
-<?php endif; ?>
-
-<table style="width: 100%; border-collapse: collapse; background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-    <thead>
-        <tr style="background: var(--color-blue-primary); color: white;">
-            <th style="padding: 10px; text-align: left;"><?= __('admin_table_title') ?></th>
-            <th style="padding: 10px; text-align: left;"><?= __('admin_table_date') ?></th>
-            <th style="padding: 10px; text-align: right;"><?= __('admin_table_actions') ?></th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php foreach ($actualites as $actu): ?>
-        <tr style="border-bottom: 1px solid #eee;">
-            <td style="padding: 10px;"><?= h($actu['titre']) ?></td>
-            <td style="padding: 10px;"><?= formatDate($actu['date_publication']) ?></td>
-            <td style="padding: 10px; text-align: right;">
-                <a href="edit.php?id=<?= $actu['id'] ?>" style="color: var(--color-blue-accent); margin-right: 10px;"><?= __('admin_edit') ?></a>
-                <a href="delete.php?id=<?= $actu['id'] ?>" style="color: var(--color-red-accent);" onclick="return confirm('<?= __('admin_confirm_delete') ?>');"><?= __('admin_delete') ?></a>
-            </td>
-        </tr>
-        <?php endforeach; ?>
-    </tbody>
-</table>
+<div class="card" style="padding: 0; overflow: hidden; border: none;">
+    <table style="width: 100%; border-collapse: collapse; background: white;">
+        <thead>
+            <tr style="background: var(--admin-primary); color: white;">
+                <th style="padding: 15px; text-align: left;"><?= __('admin_table_title') ?></th>
+                <th style="padding: 15px; text-align: left;"><?= __('admin_table_date') ?></th>
+                <th style="padding: 15px; text-align: right;"><?= __('admin_table_actions') ?></th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($actualites as $actu): ?>
+            <tr style="border-bottom: 1px solid #edf2f7; transition: background 0.2s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='white'">
+                <td style="padding: 15px; font-weight: 500;"><?= h($actu['titre']) ?></td>
+                <td style="padding: 15px; color: #718096;"><?= formatDate($actu['date_publication']) ?></td>
+                <td style="padding: 15px; text-align: right;">
+                    <a href="edit.php?id=<?= $actu['id'] ?>" class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.8rem; margin-right: 5px;"><?= __('admin_edit') ?></a>
+                    <a href="delete.php?id=<?= $actu['id'] ?>" class="btn" style="padding: 4px 10px; font-size: 0.8rem; color: #e74c3c; border: 1px solid #e74c3c;"><?= __('admin_delete') ?></a>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+            <?php if (empty($actualites)): ?>
+                <tr><td colspan="3" style="padding: 30px; text-align: center; color: #a0aec0;"><?= __('no_news') ?></td></tr>
+            <?php endif; ?>
+        </tbody>
+    </table>
+</div>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>

@@ -138,7 +138,7 @@ function resizeImage($sourcePath, $destPath, $maxWidth, $maxHeight) {
 
 // Définition de BASE_URL pour gérer les chemins absolus (Local vs Production)
 if (!defined('BASE_URL')) {
-    $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
+    $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') ? "https" : "http";
     $server_host = $_SERVER['HTTP_HOST'] ?? 'localhost';
     
     // Si l'URL commence par /institue music/ (cas de XAMPP), on l'inclut dans la base

@@ -22,9 +22,14 @@ if ($id) {
         if (file_exists($fullPath) && is_file($fullPath)) {
             unlink($fullPath);
         }
-        
+    }
+    
+    try {
         $stmt = $pdo->prepare("DELETE FROM galerie WHERE id = :id");
         $stmt->execute(['id' => $id]);
+        $_SESSION['flash_success'] = "Image supprimée avec succès !";
+    } catch (PDOException $e) {
+        $_SESSION['flash_error'] = "Erreur lors de la suppression : " . $e->getMessage();
     }
 }
 
