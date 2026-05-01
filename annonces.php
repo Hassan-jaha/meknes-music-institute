@@ -32,7 +32,7 @@ $annonces = $stmt->fetchAll();
                 <div class="card-body">
                     <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                         <h3 class="card-title" style="margin-bottom: 5px;">
-                            <?= $annonce['is_pinned'] ? '📌 ' : '' ?><?= h($annonce['titre']) ?>
+                            <?= $annonce['is_pinned'] ? '<svg width="16" height="16" fill="var(--color-red-primary)" viewBox="0 0 24 24" style="vertical-align: middle; margin-right: 5px;"><path d="M16 12V4h1V2H7v2h1v8l-2 2v2h5.2v6h1.6v-6H18v-2l-2-2z"/></svg>' : '' ?><?= h($annonce['titre']) ?>
                         </h3>
                         <span style="font-size: 0.8rem; color: var(--color-text-muted);"><?= __('expires_on') ?> : <?= formatDate($annonce['date_expiration']) ?></span>
                     </div>

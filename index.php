@@ -15,14 +15,6 @@ $stmt = $pdo->query("SELECT * FROM actualites ORDER BY date_publication DESC LIM
 $latest_news = $stmt->fetchAll();
 ?>
 
-<?php if ($pinned_annonce): ?>
-<div class="annonces-banner">
-    <div class="container">
-        📢 <strong><?= h($pinned_annonce['titre']) ?></strong> : <?= h(truncateText($pinned_annonce['contenu'], 100)) ?> 
-        <a href="annonces.php"><?= __('view_all_announcements') ?> &rarr;</a>
-    </div>
-</div>
-<?php endif; ?>
 
 <!-- Hero Section -->
 <section class="hero">
@@ -63,9 +55,18 @@ $latest_news = $stmt->fetchAll();
             <h2 style="font-size: 2.5rem;"><?= __('section_excellence') ?></h2>
             <p><?= __('excellence_text') ?></p>
             <ul style="margin-top: 1.5rem; list-style: none;">
-                <li style="margin-bottom: 10px;">✨ <?= __('excellence_list_1') ?></li>
-                <li style="margin-bottom: 10px;">✨ <?= __('excellence_list_2') ?></li>
-                <li style="margin-bottom: 10px;">✨ <?= __('excellence_list_3') ?></li>
+                <li style="margin-bottom: 10px; display:flex; align-items:center;">
+                    <svg width="18" height="18" fill="var(--color-gold-primary)" viewBox="0 0 24 24" style="margin-right:8px;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                    <?= __('excellence_list_1') ?>
+                </li>
+                <li style="margin-bottom: 10px; display:flex; align-items:center;">
+                    <svg width="18" height="18" fill="var(--color-gold-primary)" viewBox="0 0 24 24" style="margin-right:8px;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                    <?= __('excellence_list_2') ?>
+                </li>
+                <li style="margin-bottom: 10px; display:flex; align-items:center;">
+                    <svg width="18" height="18" fill="var(--color-gold-primary)" viewBox="0 0 24 24" style="margin-right:8px;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                    <?= __('excellence_list_3') ?>
+                </li>
             </ul>
         </div>
         <div style="flex: 1; min-width: 300px; border-radius: 8px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); position: relative; padding-bottom: 28%; height: 0;">
@@ -92,8 +93,9 @@ $latest_news = $stmt->fetchAll();
             },
             events: {
                 'onReady': function(event) {
-                    event.target.setVolume(50); // Volume moyen (50%)
-                    event.target.playVideo();
+                event.target.setPlaybackQuality('hd1080'); // Force high quality
+                event.target.setVolume(50); // Volume moyen (50%)
+                event.target.playVideo();
                 }
             }
         });
