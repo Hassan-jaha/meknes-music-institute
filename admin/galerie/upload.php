@@ -9,36 +9,47 @@ $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $titre = trim($_POST['titre'] ?? '');
     
-    if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-        $fileSize = $_FILES['image']['size'];
-        $fileName = $_FILES['image']['name'];
-        $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-        $allowedExtensions = ['jpg', 'jpeg', 'png'];
+    // Vérification de l'existence et des erreurs d'upload
+    if (isset($_FILES['image'])) {
+        $uploadError = $_FILES['image']['error'];
+        
+        if ($uploadError === UPLOAD_ERR_OK) {
+            $fileSize = $_FILES['image']['size'];
+            $fileName = $_FILES['image']['name'];
+            $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+            $allowedExtensions = ['jpg', 'jpeg', 'png'];
 
-        if (!in_array($fileExtension, $allowedExtensions)) {
-            $error = "Format non supporté (Uniquement JPG, JPEG, PNG).";
-        } elseif ($fileSize > 5 * 1024 * 1024) {
-            $error = "L'image est trop lourde (Maximum 5 Mo).";
-        } else {
-            $newFileName = md5(time() . $fileName) . '.' . $fileExtension;
-            $dest_path = '../../public/uploads/' . $newFileName;
-            $db_path = 'public/uploads/' . $newFileName;
-            
-            if (resizeImage($_FILES['image']['tmp_name'], $dest_path, 1200, 1200)) {
-                $pdo = getDBConnection();
-                $stmt = $pdo->prepare("INSERT INTO galerie (titre_image, image_path) VALUES (:titre, :image_path)");
-                if ($stmt->execute(['titre' => $titre ?: $fileName, 'image_path' => $db_path])) {
-                    header("Location: index.php?success=added");
-                    exit;
-                } else {
-                    $error = "Erreur lors de l'enregistrement.";
-                }
+            if (!in_array($fileExtension, $allowedExtensions)) {
+                $error = "Format non supporté (Uniquement JPG, JPEG, PNG).";
+            } elseif ($fileSize > 5 * 1024 * 1024) {
+                $error = "L'image est trop lourde (Maximum 5 Mo).";
             } else {
-                $error = "Erreur lors du traitement de l'image.";
+                $newFileName = md5(time() . $fileName) . '.' . $fileExtension;
+                $dest_path = '../../public/uploads/' . $newFileName;
+                $db_path = 'public/uploads/' . $newFileName;
+                
+                if (resizeImage($_FILES['image']['tmp_name'], $dest_path, 1200, 1200)) {
+                    $pdo = getDBConnection();
+                    $stmt = $pdo->prepare("INSERT INTO galerie (titre_image, image_path) VALUES (:titre, :image_path)");
+                    if ($stmt->execute(['titre' => $titre ?: $fileName, 'image_path' => $db_path])) {
+                        header("Location: index.php?success=added");
+                        exit;
+                    } else {
+                        $error = "Erreur lors de l'enregistrement.";
+                    }
+                } else {
+                    $error = "Erreur lors du traitement de l'image.";
+                }
             }
+        } elseif ($uploadError === UPLOAD_ERR_INI_SIZE || $uploadError === UPLOAD_ERR_FORM_SIZE) {
+            $error = "Le fichier est trop lourd pour le serveur (Limite XAMPP dépassée).";
+        } elseif ($uploadError === UPLOAD_ERR_NO_FILE) {
+            $error = "Veuillez sélectionner une image pour la galerie.";
+        } else {
+            $error = "Erreur lors du téléchargement (Code: $uploadError).";
         }
     } else {
-        $error = "Veuillez sélectionner une image.";
+        $error = "Aucun fichier reçu.";
     }
 }
 ?>
