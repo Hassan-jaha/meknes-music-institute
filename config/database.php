@@ -19,9 +19,10 @@ if ($is_local) {
     $password = '';
     $port = '3306';
 } else {
-    // Désactiver les erreurs en production (Railway)
-    ini_set('display_errors', 0);
-    error_reporting(0);
+    // Désactiver les erreurs en production (Railway) - TEMPORAIREMENT ACTIVE POUR LE DEBUG
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
 
     // Paramètres Railway
     $host     = getenv('MYSQLHOST') ?: 'localhost';
