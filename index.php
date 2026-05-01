@@ -84,7 +84,7 @@ $latest_news = $stmt->fetchAll();
             videoId: '5TsEXMj-QyE',
             playerVars: {
                 'autoplay': 1,
-                'mute': 0,
+                'mute': 1, // Muted is required for autoplay to work in Chrome/Safari
                 'controls': 1,
                 'loop': 1,
                 'playlist': '5TsEXMj-QyE',
@@ -93,9 +93,8 @@ $latest_news = $stmt->fetchAll();
             },
             events: {
                 'onReady': function(event) {
-                event.target.setPlaybackQuality('hd1080'); // Force high quality
-                event.target.setVolume(50); // Volume moyen (50%)
-                event.target.playVideo();
+                    event.target.setPlaybackQuality('hd1080'); // Force high quality
+                    event.target.playVideo();
                 }
             }
         });
