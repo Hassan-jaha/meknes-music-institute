@@ -37,6 +37,9 @@ $annonces = $stmt->fetchAll();
                         <span style="font-size: 0.8rem; color: var(--color-text-muted);">Expire le : <?= formatDateFR($annonce['date_expiration']) ?></span>
                     </div>
                     <p class="card-text" style="white-space: pre-wrap;"><?= h($annonce['contenu']) ?></p>
+                    <?php if ($annonce['image_path']): ?>
+                        <img src="<?= asset(h($annonce['image_path'])) ?>" style="width: 100%; max-height: 400px; object-fit: cover; border-radius: 4px; margin-top: 15px;" loading="lazy">
+                    <?php endif; ?>
                 </div>
             </div>
             <?php endforeach; ?>

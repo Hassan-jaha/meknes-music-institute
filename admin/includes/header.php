@@ -21,7 +21,7 @@ if (!isset($_SESSION['admin_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= __('admin_login_header') ?> | Institut de Musique</title>
-    <link rel="stylesheet" href="../../public/css/style.css">
+    <link rel="stylesheet" href="<?= asset('public/css/style.css') ?>">
     <style>
         .admin-nav { background: var(--color-blue-deep); padding: 1rem 0; color: white; border-bottom: 3px solid var(--color-gold-primary); }
         .admin-nav .container { display: flex; justify-content: space-between; align-items: center; }
@@ -35,13 +35,13 @@ if (!isset($_SESSION['admin_id'])) {
     <div class="container">
         <div class="admin-header-title"><?= __('admin_login_header') ?></div>
         <div>
-            <a href="<?= $path_prefix ?>dashboard.php"><?= __('admin_dashboard') ?></a>
-            <a href="<?= $path_prefix ?>actualites/index.php"><?= __('nav_news') ?></a>
-            <a href="<?= $path_prefix ?>annonces/index.php"><?= __('nav_announcements') ?></a>
-            <a href="<?= $path_prefix ?>galerie/index.php"><?= __('nav_gallery') ?></a>
-            <a href="<?= $path_prefix ?>messages/index.php"><?= __('admin_manage_messages') ?></a>
-            <a href="<?= $root_prefix ?>index.php" target="_blank">🌐 <?= __('admin_back_to_site') ?></a>
-            <a href="<?= $path_prefix ?>logout.php" style="color: #ff7675;"><?= __('admin_logout') ?></a>
+            <a href="<?= asset('admin/dashboard.php') ?>"><?= __('admin_dashboard') ?></a>
+            <a href="<?= asset('admin/actualites/index.php') ?>"><?= __('nav_news') ?></a>
+            <a href="<?= asset('admin/annonces/index.php') ?>"><?= __('nav_announcements') ?></a>
+            <a href="<?= asset('admin/galerie/index.php') ?>"><?= __('nav_gallery') ?></a>
+            <a href="<?= asset('admin/messages/index.php') ?>"><?= __('admin_manage_messages') ?></a>
+            <a href="<?= asset('index.php') ?>" target="_blank">🌐 <?= __('admin_back_to_site') ?></a>
+            <a href="<?= asset('admin/logout.php') ?>" style="color: #ff7675;"><?= __('admin_logout') ?></a>
         </div>
     </div>
 </nav>
