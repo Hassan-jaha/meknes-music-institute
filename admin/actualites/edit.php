@@ -26,28 +26,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $image_path = $actualite['image_path'];
 
     if ($titre && $contenu && $date_publication) {
-        // Gestion de l'image (si nouvelle image fournie)
-        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-            $fileTmpPath = $_FILES['image']['tmp_name'];
-            $fileName = $_FILES['image']['name'];
-            $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-            $newFileName = md5(time() . $fileName) . '.' . $fileExtension;
-            $dest_path = '../../public/uploads/' . $newFileName;
+        // Gestion de l'image (Optionnelle)
+        if (isset($_FILES['image'])) {
+            $uploadError = $_FILES['image']['error'];
             
-            if (resizeImage($fileTmpPath, $dest_path, 800, 600)) {
-                $image_path = 'public/uploads/' . $newFileName;
+            if ($uploadError === UPLOAD_ERR_OK) {
+                $fileSize = $_FILES['image']['size'];
+                $fileName = $_FILES['image']['name'];
+                $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+                $allowedExtensions = ['jpg', 'jpeg', 'png'];
+
+                if (!in_array($fileExtension, $allowedExtensions)) {
+                    $error = "Format non supporté (Uniquement JPG, JPEG, PNG).";
+                } elseif ($fileSize > 5 * 1024 * 1024) {
+                    $error = "L'image est trop lourde (Maximum 5 Mo).";
+                } else {
+                    $newFileName = md5(time() . $fileName) . '.' . $fileExtension;
+                    $dest_path = '../../public/uploads/' . $newFileName;
+                    if (resizeImage($_FILES['image']['tmp_name'], $dest_path, 800, 600)) {
+                        $image_path = 'public/uploads/' . $newFileName;
+                    }
+                }
+            } elseif ($uploadError !== UPLOAD_ERR_NO_FILE) {
+                $error = "Problème avec l'image : le fichier est probablement trop lourd pour le serveur.";
             }
         }
 
-        $stmt = $pdo->prepare("UPDATE actualites SET titre = :titre, contenu = :contenu, date_publication = :date_publication, image_path = :image_path WHERE id = :id");
-        if ($stmt->execute(['titre' => $titre, 'contenu' => $contenu, 'date_publication' => $date_publication, 'image_path' => $image_path, 'id' => $id])) {
-            $success = "Actualité mise à jour avec succès.";
-            $actualite['titre'] = $titre;
-            $actualite['contenu'] = $contenu;
-            $actualite['date_publication'] = $date_publication;
-            $actualite['image_path'] = $image_path;
-        } else {
-            $error = "Erreur lors de la mise à jour.";
+        if (!$error) {
+            $stmt = $pdo->prepare("UPDATE actualites SET titre = :titre, contenu = :contenu, date_publication = :date_publication, image_path = :image_path WHERE id = :id");
+            if ($stmt->execute(['titre' => $titre, 'contenu' => $contenu, 'date_publication' => $date_publication, 'image_path' => $image_path, 'id' => $id])) {
+                header("Location: index.php?success=edited");
+                exit;
+            } else {
+                $error = "Erreur lors de la mise à jour.";
+            }
         }
     } else {
         $error = "Veuillez remplir tous les champs obligatoires.";
