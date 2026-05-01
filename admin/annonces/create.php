@@ -5,7 +5,7 @@ require_once __DIR__ . '/../../includes/functions.php';
 require_once __DIR__ . '/../includes/header.php';
 
 $error = '';
-$success = '';
+$success = isset($_GET['success']) ? "Annonce ajoutée avec succès !" : '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $titre = trim($_POST['titre'] ?? '');
@@ -18,7 +18,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             $pdo = getDBConnection();
             
-            // Gestion de l'image (si fournie)
             if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
                 $fileTmpPath = $_FILES['image']['tmp_name'];
                 $fileName = $_FILES['image']['name'];
@@ -39,7 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'date_expiration' => $date_expiration, 
                 'image_path' => $image_path
             ])) {
-                $success = "Annonce ajoutée avec succès !";
+                header("Location: create.php?success=1");
+                exit;
             } else {
                 $error = "Erreur lors de l'enregistrement.";
             }
