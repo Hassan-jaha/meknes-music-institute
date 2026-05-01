@@ -68,11 +68,37 @@ $latest_news = $stmt->fetchAll();
                 <li style="margin-bottom: 10px;">✨ <?= __('excellence_list_3') ?></li>
             </ul>
         </div>
-        <div style="flex: 1; min-width: 300px; background: var(--color-blue-primary); height: 300px; border-radius: 8px; display: flex; align-items: center; justify-content: center; background-image: url('public/images/patterns/zellige-bg.svg'); background-size: 80px;">
-            <div style="background: white; padding: 20px; border-radius: 50%; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
-                 <svg width="60" height="60" viewBox="0 0 24 24" fill="var(--color-red-primary)"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
-            </div>
+        <div style="flex: 1; min-width: 300px; border-radius: 8px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); position: relative; padding-bottom: 28%; height: 0;">
+            <div id="main-player" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></div>
         </div>
+    </div>
+</section>
+
+<!-- API YouTube -->
+<script src="https://www.youtube.com/iframe_api"></script>
+<script>
+    var player;
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('main-player', {
+            videoId: '5TsEXMj-QyE',
+            playerVars: {
+                'autoplay': 1,
+                'mute': 0,
+                'controls': 1,
+                'loop': 1,
+                'playlist': '5TsEXMj-QyE',
+                'rel': 0,
+                'modestbranding': 1
+            },
+            events: {
+                'onReady': function(event) {
+                    event.target.setVolume(50); // Volume moyen (50%)
+                    event.target.playVideo();
+                }
+            }
+        });
+    }
+</script>
     </div>
 </section>
 
