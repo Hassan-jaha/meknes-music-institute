@@ -1,24 +1,26 @@
 <?php
 // init_db.php
-// Ce script initialise la base de données et les tables requises.
-// À lancer une seule fois lors de l'installation.
+// Ce script réinitialise complètement la base de données.
+// Utile pour appliquer des changements de structure (colonnes).
 
 $host = 'localhost';
-$user = 'root'; // Modifier selon l'environnement
-$pass = '';     // Modifier selon l'environnement
+$user = 'root'; 
+$pass = '';     
 
 try {
-    // Connexion sans spécifier de base de données pour pouvoir la créer
     $pdo = new PDO("mysql:host=$host;charset=utf8mb4", $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    echo "Création de la base de données 'institut_musique'...<br>";
-    $pdo->exec("CREATE DATABASE IF NOT EXISTS institut_musique CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+    echo "Initialisation de la base de données...<br>";
+    
+    // On recrée la base pour être sûr de repartir de zéro
+    $pdo->exec("DROP DATABASE IF EXISTS institut_musique");
+    $pdo->exec("CREATE DATABASE institut_musique CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
     $pdo->exec("USE institut_musique");
 
     echo "Création de la table 'administrateurs'...<br>";
     $pdo->exec("
-        CREATE TABLE IF NOT EXISTS administrateurs (
+        CREATE TABLE administrateurs (
             id INT AUTO_INCREMENT PRIMARY KEY,
             username VARCHAR(50) NOT NULL UNIQUE,
             password_hash VARCHAR(255) NOT NULL,
@@ -28,7 +30,7 @@ try {
 
     echo "Création de la table 'actualites'...<br>";
     $pdo->exec("
-        CREATE TABLE IF NOT EXISTS actualites (
+        CREATE TABLE actualites (
             id INT AUTO_INCREMENT PRIMARY KEY,
             titre VARCHAR(255) NOT NULL,
             contenu TEXT NOT NULL,
@@ -40,7 +42,7 @@ try {
 
     echo "Création de la table 'annonces'...<br>";
     $pdo->exec("
-        CREATE TABLE IF NOT EXISTS annonces (
+        CREATE TABLE annonces (
             id INT AUTO_INCREMENT PRIMARY KEY,
             titre VARCHAR(255) NOT NULL,
             contenu TEXT NOT NULL,
@@ -52,7 +54,7 @@ try {
 
     echo "Création de la table 'galerie'...<br>";
     $pdo->exec("
-        CREATE TABLE IF NOT EXISTS galerie (
+        CREATE TABLE galerie (
             id INT AUTO_INCREMENT PRIMARY KEY,
             titre_image VARCHAR(255) NOT NULL,
             image_path VARCHAR(255) NOT NULL,
@@ -60,39 +62,29 @@ try {
         )
     ");
 
-    // Insertion d'un administrateur par défaut
-    $stmt = $pdo->prepare("SELECT COUNT(*) FROM administrateurs WHERE username = 'admin'");
-    $stmt->execute();
-    if ($stmt->fetchColumn() == 0) {
-        $hash = password_hash('admin123', PASSWORD_BCRYPT);
-        $pdo->exec("INSERT INTO administrateurs (username, password_hash) VALUES ('admin', '$hash')");
-        echo "Administrateur par défaut créé (admin / admin123).<br>";
-    }
+    echo "Création de la table 'messages'...<br>";
+    $pdo->exec("
+        CREATE TABLE messages (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            nom VARCHAR(255) NOT NULL,
+            email VARCHAR(255) NOT NULL,
+            message TEXT NOT NULL,
+            date_envoi DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+    ");
 
-    // Insertion de fausses données (Lorem Ipsum) pour test
-    // Actualités
-    $stmt = $pdo->prepare("SELECT COUNT(*) FROM actualites");
-    $stmt->execute();
-    if ($stmt->fetchColumn() == 0) {
-        $pdo->exec("INSERT INTO actualites (titre, contenu, image_path, date_publication) VALUES 
-            ('Concert d\'Hiver', 'L\'Institut a le plaisir de vous annoncer son grand concert d\'hiver...', 'public/images/placeholder.jpg', CURDATE()),
-            ('Nouvelle Session d\'Inscriptions', 'Les inscriptions pour la session de printemps sont ouvertes...', 'public/images/placeholder.jpg', DATE_SUB(CURDATE(), INTERVAL 2 DAY)),
-            ('Masterclass de Violon', 'Une masterclass exceptionnelle sera animée par...', 'public/images/placeholder.jpg', DATE_SUB(CURDATE(), INTERVAL 5 DAY))");
-        echo "Actualités de test insérées.<br>";
-    }
+    // Admin par défaut
+    $hash = password_hash('admin123', PASSWORD_BCRYPT);
+    $pdo->exec("INSERT INTO administrateurs (username, password_hash) VALUES ('admin', '$hash')");
 
-    // Annonces
-    $stmt = $pdo->prepare("SELECT COUNT(*) FROM annonces");
-    $stmt->execute();
-    if ($stmt->fetchColumn() == 0) {
-        $pdo->exec("INSERT INTO annonces (titre, contenu, is_pinned, date_expiration) VALUES 
-            ('Fermeture exceptionnelle', 'L\'institut sera fermé le 1er Mai.', TRUE, DATE_ADD(CURDATE(), INTERVAL 10 DAY)),
-            ('Rappel Cours', 'N\'oubliez pas vos partitions pour les cours d\'ensemble.', FALSE, DATE_ADD(CURDATE(), INTERVAL 5 DAY))");
-        echo "Annonces de test insérées.<br>";
-    }
+    // Données de test
+    $pdo->exec("INSERT INTO actualites (titre, contenu, image_path, date_publication) VALUES 
+        ('Nouveau Site Web', 'Bienvenue sur le nouveau portail digital de l\'institut.', 'public/images/placeholder.jpg', CURDATE()),
+        ('Inscriptions Ouvertes', 'Venez vous inscrire pour la nouvelle saison musicale.', 'public/images/placeholder.jpg', CURDATE())");
 
-    echo "<strong>Initialisation terminée avec succès !</strong>";
+    echo "<br><strong>Base de données réinitialisée avec succès !</strong><br>";
+    echo "Vous pouvez maintenant retourner sur le <a href='index.php'>Site</a>.";
 
 } catch (PDOException $e) {
-    die("Erreur lors de l'initialisation : " . $e->getMessage());
+    die("Erreur fatale : " . $e->getMessage());
 }
