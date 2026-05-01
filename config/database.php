@@ -1,10 +1,10 @@
 <?php
-// جلب الإعدادات من نظام Railway تلقائياً
-$host     = getenv('MYSQLHOST');     // سيأخذ قيمة RAILWAY_PRIVATE_DOMAIN تلقائياً
-$db_name  = getenv('MYSQLDATABASE'); // سيأخذ قيمة railway تلقائياً
-$user     = getenv('MYSQLUSER');     // سيأخذ قيمة root تلقائياً
-$password = getenv('MYSQLPASSWORD'); // سيأخذ كلمة السر nvHNkGR... تلقائياً
-$port     = getenv('MYSQLPORT');     // سيأخذ 3306 تلقائياً
+// محاولة جلب البيانات من Railway، وإذا لم توجد نستخدم بيانات الـ localhost
+$host     = getenv('MYSQLHOST') ?: 'localhost';
+$db_name  = getenv('MYSQLDATABASE') ?: 'institut_musique'; // تأكد من اسم قاعدتك في لوكال
+$user     = getenv('MYSQLUSER') ?: 'root';
+$password = getenv('MYSQLPASSWORD') ?: ''; // غالباً في اللوكال تكون فارغة
+$port     = getenv('MYSQLPORT') ?: '3306';
 
 try {
     $pdo = new PDO("mysql:host=$host;port=$port;dbname=$db_name;charset=utf8", $user, $password);
