@@ -13,6 +13,11 @@ if (isset($_GET['lang'])) {
     }
 }
 
+// Libérer le verrou de session si on n'est pas dans l'administration (pour éviter que le site soit lourd/bloqué)
+if (strpos($_SERVER['PHP_SELF'], '/admin/') === false) {
+    session_write_close();
+}
+
 /**
  * Fonction de traduction
  */

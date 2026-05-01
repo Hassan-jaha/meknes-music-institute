@@ -2,9 +2,9 @@
 // جلب البيانات من بيئة Railway
 // config/database.php
 
-// Détecter si on est en local (localhost ou 127.0.0.1)
-$http_host = $_SERVER['HTTP_HOST'] ?? '';
-$is_local = (strpos($http_host, 'localhost') !== false || strpos($http_host, '127.0.0.1') !== false);
+// Détecter si on est sur Railway (les variables d'environnement seront définies)
+$is_railway = getenv('MYSQLHOST') !== false;
+$is_local = !$is_railway;
 
 if ($is_local) {
     // Activer l'affichage des erreurs uniquement en local
