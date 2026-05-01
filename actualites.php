@@ -29,11 +29,11 @@ $actualites = $stmt->fetchAll();
         <div class="grid">
             <?php foreach ($actualites as $news): ?>
             <article class="card">
-                <img src="<?= h($news['image_path']) ?>" class="card-img" alt="<?= h($news['titre']) ?>">
+                <img src="<?= asset(h($news['image_path'])) ?>" class="card-img" alt="<?= h($news['titre']) ?>">
                 <div class="card-body">
-                    <span class="card-date"><?= formatDateFR($news['date_publication']) ?></span>
+                    <span class="card-date"><?= formatDate($news['date_publication']) ?></span>
                     <h3 class="card-title"><?= h($news['titre']) ?></h3>
-                    <p class="card-text"><?= h($news['contenu']) ?></p>
+                    <p class="card-text"><?= nl2br(h($news['contenu'])) ?></p>
                 </div>
             </article>
             <?php endforeach; ?>

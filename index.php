@@ -6,10 +6,23 @@ require_once __DIR__ . '/includes/header.php';
 
 $pdo = getDBConnection();
 
+// Récupérer les annonces épinglées
+$stmt_pinned = $pdo->query("SELECT * FROM annonces WHERE is_pinned = 1 AND date_expiration >= CURDATE() ORDER BY created_at DESC LIMIT 1");
+$pinned_annonce = $stmt_pinned->fetch();
+
 // Récupérer les 3 dernières actualités
 $stmt = $pdo->query("SELECT * FROM actualites ORDER BY date_publication DESC LIMIT 3");
 $latest_news = $stmt->fetchAll();
 ?>
+
+<?php if ($pinned_annonce): ?>
+<div class="annonces-banner">
+    <div class="container">
+        📢 <strong><?= h($pinned_annonce['titre']) ?></strong> : <?= h(truncateText($pinned_annonce['contenu'], 100)) ?> 
+        <a href="annonces.php"><?= __('view_all_announcements') ?> &rarr;</a>
+    </div>
+</div>
+<?php endif; ?>
 
 <!-- Hero Section -->
 <section class="hero">
@@ -27,11 +40,11 @@ $latest_news = $stmt->fetchAll();
         <div class="grid">
             <?php foreach ($latest_news as $news): ?>
             <article class="card">
-                <img src="<?= h($news['image_path']) ?>" class="card-img" alt="<?= h($news['titre']) ?>">
+                <img src="<?= asset(h($news['image_path'])) ?>" class="card-img" alt="<?= h($news['titre']) ?>">
                 <div class="card-body">
-                    <span class="card-date"><?= formatDateFR($news['date_publication']) ?></span>
+                    <span class="card-date"><?= formatDate($news['date_publication']) ?></span>
                     <h3 class="card-title"><?= h($news['titre']) ?></h3>
-                    <p class="card-text"><?= h(truncateText($news['contenu'], 120)) ?></p>
+                    <p class="card-text"><?= nl2br(h(truncateText($news['contenu'], 300))) ?></p>
                     <a href="actualites.php" style="display: inline-block; margin-top: 1rem; font-weight: 600;">Lire la suite &rarr;</a>
                 </div>
             </article>
