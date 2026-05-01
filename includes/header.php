@@ -24,20 +24,7 @@ if (!isset($_SESSION['admin_id'])) {
 </head>
 <body>
 
-<?php
-// Optionnel: Afficher une annonce épinglée
-require_once __DIR__ . '/../config/database.php';
-try {
-    $pdo = getDBConnection();
-    $stmt = $pdo->prepare("SELECT titre FROM annonces WHERE is_pinned = 1 AND date_expiration >= CURDATE() ORDER BY created_at DESC LIMIT 1");
-    $stmt->execute();
-    if ($annonce = $stmt->fetch()) {
-        echo '<div class="annonces-banner"><div class="container">📌 ' . htmlspecialchars($annonce['titre']) . ' <a href="annonces.php">' . __('view_all_announcements') . '</a></div></div>';
-    }
-} catch (Exception $e) {
-    // Silently ignore DB errors in header for banner
-}
-?>
+
 
 <header class="site-header">
     <div class="container">
