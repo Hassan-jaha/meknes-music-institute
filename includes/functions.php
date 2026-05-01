@@ -5,6 +5,14 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 require_once __DIR__ . '/translations.php';
 
+// Changement de langue centralisé
+if (isset($_GET['lang'])) {
+    $requested_lang = $_GET['lang'];
+    if (in_array($requested_lang, ['fr', 'ar', 'en', 'zgh'])) {
+        $_SESSION['lang'] = $requested_lang;
+    }
+}
+
 /**
  * Fonction de traduction
  */

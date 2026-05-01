@@ -4,13 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Changement de langue
-if (isset($_GET['lang'])) {
-    $requested_lang = $_GET['lang'];
-    if (in_array($requested_lang, ['fr', 'ar', 'en', 'zgh'])) {
-        $_SESSION['lang'] = $requested_lang;
-    }
-}
+// Changement de langue géré par functions.php
 
 // Mise en cache navigateur pour les pages publiques (1 heure)
 if (!isset($_SESSION['admin_id'])) {

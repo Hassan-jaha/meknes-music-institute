@@ -40,6 +40,15 @@ if (!isset($_SESSION['admin_id'])) {
             <a href="<?= asset('admin/annonces/index.php') ?>"><?= __('nav_announcements') ?></a>
             <a href="<?= asset('admin/galerie/index.php') ?>"><?= __('nav_gallery') ?></a>
             <a href="<?= asset('admin/messages/index.php') ?>"><?= __('admin_manage_messages') ?></a>
+            
+            <!-- Lang Selector Admin -->
+            <span style="margin: 0 10px; border-left: 1px solid rgba(255,255,255,0.2); padding-left: 10px;">
+                <a href="?lang=fr">FR</a> | 
+                <a href="?lang=ar">AR</a> | 
+                <a href="?lang=en">EN</a> | 
+                <a href="?lang=zgh">ⵣ</a>
+            </span>
+
             <a href="<?= asset('index.php') ?>" target="_blank">🌐 <?= __('admin_back_to_site') ?></a>
             <a href="<?= asset('admin/logout.php') ?>" style="color: #ff7675;"><?= __('admin_logout') ?></a>
         </div>
