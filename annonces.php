@@ -34,7 +34,7 @@ $annonces = $stmt->fetchAll();
                         <h3 class="card-title" style="margin-bottom: 5px;">
                             <?= $annonce['is_pinned'] ? '📌 ' : '' ?><?= h($annonce['titre']) ?>
                         </h3>
-                        <span style="font-size: 0.8rem; color: var(--color-text-muted);">Expire le : <?= formatDateFR($annonce['date_expiration']) ?></span>
+                        <span style="font-size: 0.8rem; color: var(--color-text-muted);">Expire le : <?= formatDate($annonce['date_expiration']) ?></span>
                     </div>
                     <p class="card-text" style="white-space: pre-wrap;"><?= h($annonce['contenu']) ?></p>
                     <?php if ($annonce['image_path']): ?>

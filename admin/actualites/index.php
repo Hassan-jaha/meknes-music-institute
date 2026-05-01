@@ -25,7 +25,7 @@ $actualites = $pdo->query("SELECT * FROM actualites ORDER BY date_publication DE
         <?php foreach ($actualites as $actu): ?>
         <tr style="border-bottom: 1px solid #eee;">
             <td style="padding: 10px;"><?= h($actu['titre']) ?></td>
-            <td style="padding: 10px;"><?= formatDateFR($actu['date_publication']) ?></td>
+            <td style="padding: 10px;"><?= formatDate($actu['date_publication']) ?></td>
             <td style="padding: 10px; text-align: right;">
                 <a href="edit.php?id=<?= $actu['id'] ?>" style="color: var(--color-blue-accent); margin-right: 10px;">Modifier</a>
                 <a href="delete.php?id=<?= $actu['id'] ?>" style="color: var(--color-red-accent);" onclick="return confirm('Êtes-vous sûr ?');">Supprimer</a>

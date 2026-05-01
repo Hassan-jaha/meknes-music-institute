@@ -49,6 +49,13 @@ function formatDate($dateString) {
 }
 
 /**
+ * Alias pour compatibilité
+ */
+function formatDateFR($date) {
+    return formatDate($date);
+}
+
+/**
  * Tronque un texte proprement pour les résumés
  * @param string $text
  * @param int $length

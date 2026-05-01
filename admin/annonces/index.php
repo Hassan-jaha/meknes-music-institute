@@ -27,7 +27,7 @@ $annonces = $pdo->query("SELECT * FROM annonces ORDER BY created_at DESC")->fetc
         <tr style="border-bottom: 1px solid #eee;">
             <td style="padding: 10px;"><?= h($annonce['titre']) ?></td>
             <td style="padding: 10px; text-align: center;"><?= $annonce['is_pinned'] ? '✅' : '❌' ?></td>
-            <td style="padding: 10px;"><?= formatDateFR($annonce['date_expiration']) ?></td>
+            <td style="padding: 10px;"><?= formatDate($annonce['date_expiration']) ?></td>
             <td style="padding: 10px; text-align: right;">
                 <a href="edit.php?id=<?= $annonce['id'] ?>" style="color: var(--color-blue-accent); margin-right: 10px;">Modifier</a>
                 <a href="delete.php?id=<?= $annonce['id'] ?>" style="color: var(--color-red-accent);" onclick="return confirm('Êtes-vous sûr ?');">Supprimer</a>
