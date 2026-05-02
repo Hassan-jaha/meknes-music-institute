@@ -18,11 +18,11 @@ if (!isset($_SESSION['admin_id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= __('site_title') ?></title>
     <meta name="description" content="<?= __('site_description') ?>">
-    <link rel="stylesheet" href="public/css/style.min.css?v=1.1">
+    <link rel="stylesheet" href="<?= asset('public/css/style.min.css?v=1.1') ?>">
     <!-- Fallback if minified file fails (optional) -->
-    <!-- <link rel="stylesheet" href="public/css/style.css"> -->
+    <!-- <link rel="stylesheet" href="<?= asset('public/css/style.css') ?>"> -->
     <!-- Préchargement du fond pour un affichage instantané -->
-    <link rel="preload" href="public/images/bg-pattern.png" as="image">
+    <link rel="preload" href="<?= asset('public/images/bg-pattern.png') ?>" as="image">
 </head>
 <body>
 

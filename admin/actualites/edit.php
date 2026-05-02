@@ -65,28 +65,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <h2><?= __('admin_edit') ?> (<?= __('nav_news') ?>)</h2>
 
-<form method="POST" action="" enctype="multipart/form-data" style="background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-width: 800px; margin: 0 auto;">
-    <div style="margin-bottom: 15px;">
-        <label style="display: block; margin-bottom: 5px;"><?= __('form_label_title') ?> *</label>
-        <input type="text" name="titre" required style="width: 100%; padding: 8px;" value="<?= h($actualite['titre']) ?>">
-    </div>
-    <div style="margin-bottom: 15px;">
-        <label style="display: block; margin-bottom: 5px;"><?= __('form_label_date') ?> *</label>
-        <input type="date" name="date_publication" required style="width: 100%; padding: 8px;" value="<?= h($actualite['date_publication']) ?>">
-    </div>
-    <div style="margin-bottom: 15px;">
-        <label style="display: block; margin-bottom: 5px;"><?= __('admin_image') ?></label>
-        <?php if ($actualite['image_path']): ?>
-            <img src="<?= get_image_url($actualite['image_path']) ?>" style="width: 100px; display: block; margin-bottom: 10px;">
-        <?php endif; ?>
-        <input type="file" name="image" accept="image/*" style="width: 100%; padding: 8px;">
-    </div>
-    <div style="margin-bottom: 15px;">
-        <label style="display: block; margin-bottom: 5px;"><?= __('form_label_content') ?> *</label>
-        <textarea name="contenu" rows="8" required style="width: 100%; padding: 8px;"><?= h($actualite['contenu']) ?></textarea>
-    </div>
-    <button type="submit" class="btn btn-primary"><?= __('form_save') ?></button>
-    <a href="index.php" style="margin-left: 15px; color: var(--color-blue-primary);"><?= __('form_cancel') ?></a>
-</form>
+<div class="admin-form-container">
+    <form method="POST" action="" enctype="multipart/form-data">
+        <div style="margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 5px;"><?= __('form_label_title') ?> *</label>
+            <input type="text" name="titre" value="<?= h($actualite['titre']) ?>" required style="width: 100%; padding: 8px;">
+        </div>
+        <div style="margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 5px;"><?= __('form_label_date') ?> *</label>
+            <input type="date" name="date_publication" value="<?= $actualite['date_publication'] ?>" required style="width: 100%; padding: 8px;">
+        </div>
+        
+        <div style="margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 5px;">Image actuelle</label>
+            <?php if ($actualite['image_path']): ?>
+                <img src="<?= get_image_url($actualite['image_path']) ?>" style="width: 150px; display: block; margin-bottom: 10px; border-radius: 8px;">
+            <?php endif; ?>
+            <input type="file" name="image" accept="image/png, image/jpeg" style="width: 100%; padding: 8px;">
+        </div>
+        
+        <div style="margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 5px;"><?= __('form_label_content') ?> *</label>
+            <textarea name="contenu" rows="8" required style="width: 100%; padding: 8px;"><?= h($actualite['contenu']) ?></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px;"><?= __('form_save') ?></button>
+    </form>
+</div>
+<a href="index.php" style="margin-left: 15px; color: var(--color-blue-primary);"><?= __('form_cancel') ?></a>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>

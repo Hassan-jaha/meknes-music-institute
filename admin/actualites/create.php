@@ -57,7 +57,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <a href="index.php" class="btn"><?= __('form_cancel') ?></a>
 </div>
 
-<form method="POST" action="" enctype="multipart/form-data" style="background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-width: 800px; margin: 0 auto;">
+<div class="admin-form-container">
+    <form method="POST" action="" enctype="multipart/form-data">
     <div style="margin-bottom: 15px;">
         <label style="display: block; margin-bottom: 5px;"><?= __('form_label_title') ?> *</label>
         <input type="text" name="titre" required style="width: 100%; padding: 8px;">
@@ -75,6 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <textarea name="contenu" rows="8" required style="width: 100%; padding: 8px;"></textarea>
     </div>
     <button type="submit" class="btn btn-primary"><?= __('form_save') ?></button>
-</form>
+    </form>
+</div>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
