@@ -75,6 +75,50 @@ $latest_news = $stmt->fetchAll();
 </section>
 <?php endif; ?>
 
+<!-- News Ticker Banner -->
+<?php if (!empty($latest_news)): ?>
+<section style="background: linear-gradient(135deg, var(--color-blue-deep) 0%, #1a3a5c 100%); color: white; padding: 0; overflow: hidden; border-bottom: 3px solid var(--color-gold-primary);">
+    <div class="container" style="display: flex; align-items: stretch; min-height: 52px;">
+        <!-- Label -->
+        <div style="background: var(--color-gold-primary); color: #1e293b; padding: 0 24px; display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; flex-shrink: 0;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg>
+            <?= __('nav_news') ?>
+        </div>
+        <!-- Ticker -->
+        <div style="flex: 1; overflow: hidden; display: flex; align-items: center; padding: 0 20px; position: relative;">
+            <div style="display: flex; gap: 60px; animation: ticker 20s linear infinite; white-space: nowrap; align-items: center;">
+                <?php foreach ($latest_news as $news): ?>
+                    <a href="<?= asset('actualites.php') ?>" style="color: rgba(255,255,255,0.9); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; flex-shrink: 0;">
+                        <span style="color: var(--color-gold-primary); margin-right: 8px;">•</span>
+                        <?= h($news['titre']) ?>
+                        <span style="color: rgba(255,255,255,0.4); font-size: 0.75rem; margin-left: 8px;"><?= formatDate($news['date_publication']) ?></span>
+                    </a>
+                <?php endforeach; ?>
+                <!-- Repeat for seamless loop -->
+                <?php foreach ($latest_news as $news): ?>
+                    <a href="<?= asset('actualites.php') ?>" style="color: rgba(255,255,255,0.9); text-decoration: none; font-size: 0.9rem; flex-shrink: 0;">
+                        <span style="color: var(--color-gold-primary); margin-right: 8px;">•</span>
+                        <?= h($news['titre']) ?>
+                        <span style="color: rgba(255,255,255,0.4); font-size: 0.75rem; margin-left: 8px;"><?= formatDate($news['date_publication']) ?></span>
+                    </a>
+                <?php endforeach; ?>
+            </div>
+        </div>
+        <!-- CTA -->
+        <a href="<?= asset('actualites.php') ?>" style="background: rgba(255,255,255,0.1); color: white; padding: 0 20px; display: flex; align-items: center; gap: 6px; font-weight: 600; font-size: 0.8rem; text-decoration: none; border-left: 1px solid rgba(255,255,255,0.1); transition: background 0.2s; white-space: nowrap; flex-shrink: 0;" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">
+            <?= __('page_news_title') ?>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </a>
+    </div>
+</section>
+<style>
+@keyframes ticker {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+</style>
+<?php endif; ?>
+
 <!-- Latest News Section -->
 <section class="section">
     <div class="container">

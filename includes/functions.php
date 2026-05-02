@@ -19,10 +19,7 @@ if (isset($_GET['lang'])) {
     setLanguage($_GET['lang']);
 }
 
-// Libérer le verrou de session si on n'est pas dans l'administration
-if (strpos($_SERVER['PHP_SELF'], '/admin/') === false) {
-    session_write_close();
-}
+// Ne pas fermer la session — le garbage collector gère ça automatiquement
 
 /**
  * Fonction de traduction
