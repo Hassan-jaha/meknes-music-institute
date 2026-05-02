@@ -3,8 +3,8 @@
 
 $translations = [
     'fr' => [
-        'site_title' => 'Institut de Musique de Meknès | Conservatoire & Patrimoine',
-        'site_name' => 'Institut de Musique',
+        'site_title' => 'Conservatoire Municipal de Musique de Meknès | Excellence & Patrimoine',
+        'site_name' => 'Conservatoire de Meknès',
         'site_description' => 'Découvrez le conservatoire de musique de Meknès. Enseignement académique, actualités et patrimoine musical.',
         'nav_home' => 'Accueil',
         'nav_news' => 'Actualités',
@@ -87,8 +87,8 @@ $translations = [
         'dir' => 'ltr'
     ],
     'ar' => [
-        'site_title' => 'معهد الموسيقى بمكناس | تراث وأصالة',
-        'site_name' => 'معهد الموسيقى',
+        'site_title' => 'المعهد البلدي للموسيقى بمكناس | تميز وأصالة',
+        'site_name' => 'المعهد البلدي للموسيقى',
         'site_description' => 'اكتشف المعهد الموسيقي بمكناس. تعليم أكاديمي، أخبار وتراث موسيقي.',
         'nav_home' => 'الرئيسية',
         'nav_news' => 'الأخبار',
@@ -171,8 +171,8 @@ $translations = [
         'dir' => 'rtl'
     ],
     'en' => [
-        'site_title' => 'Meknes Music Institute | Conservatory & Heritage',
-        'site_name' => 'Music Institute',
+        'site_title' => 'Municipal Conservatory of Music of Meknes | Excellence & Heritage',
+        'site_name' => 'Meknes Conservatory',
         'site_description' => 'Discover the Meknes Music Conservatory. Academic training, news and musical heritage.',
         'nav_home' => 'Home',
         'nav_news' => 'News',
@@ -255,8 +255,8 @@ $translations = [
         'dir' => 'ltr'
     ],
     'zgh' => [
-        'site_title' => 'ⴰⵙⵉⵏⴰⴳ ⵏ ⵜⵥⴰⵡⴰⵏⵜ ⵏ ⵎⴽⵏⴰⵙ | ⵜⴰⵢⵙⵉ',
-        'site_name' => 'ⴰⵙⵉⵏⴰⴳ ⵏ ⵜⵥⴰⵡⴰⵏⵜ',
+        'site_title' => 'ⴰⵙⵉⵏⴰⴳ ⴰⴳⵔⴰⵡⴰⵏ ⵏ ⵜⵥⴰⵡⴰⵏⵜ ⵏ ⵎⴽⵏⴰⵙ | ⵜⴰⵢⵙⵉ',
+        'site_name' => 'ⴰⵙⵉⵏⴰⴳ ⴰⴳⵔⴰⵡⴰⵏ',
         'site_description' => 'ⴰⴼ ⴰⵙⵉⵏⴰⴳ ⵏ ⵜⵥⴰⵡⴰⵏⵜ ⵏ ⵎⴽⵏⴰⵙ. ⴰⵙⵍⵎⴷ ⴰⴽⴰⴷⵉⵎⵉ.',
         'nav_home' => 'ⴰⵏⵙⴰ',
         'nav_news' => 'ⵉⵏⵖⵎⵉⵙⵏ',
