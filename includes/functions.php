@@ -90,6 +90,12 @@ function truncateText($text, $length = 100) {
  * @return bool
  */
 function resizeImage($sourcePath, $destPath, $maxWidth, $maxHeight) {
+    // Vérifier et créer le dossier de destination si nécessaire
+    $destDir = dirname($destPath);
+    if (!is_dir($destDir)) {
+        mkdir($destDir, 0755, true);
+    }
+
     // Vérifier si l'extension GD est installée
     if (!function_exists('imagecreatefromjpeg')) {
         return copy($sourcePath, $destPath);
@@ -142,7 +148,6 @@ if (!defined('BASE_URL')) {
     $server_host = $_SERVER['HTTP_HOST'] ?? 'localhost';
     
     // Détection automatique du sous-répertoire (ex: /institue music/)
-    // On récupère le chemin du script actuel et on remonte d'un niveau si on est dans includes/
     $script_path = str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? '');
     $root_path = preg_replace('/(admin\/.*|includes\/.*|config\/.*)$/', '', $script_path);
     $root_path = rtrim($root_path, '/');
@@ -155,11 +160,23 @@ if (!defined('BASE_URL')) {
  */
 function asset($path) {
     if (!$path) return '';
-    // Si le chemin commence déjà par http, on le laisse
     if (strpos($path, 'http') === 0) return $path;
-    
-    // Nettoyer le chemin (retirer le / initial s'il existe pour éviter le double slash)
     $clean_path = ltrim($path, '/');
-    
     return BASE_URL . $clean_path;
+}
+
+/**
+ * Retourne l'URL d'une image avec une image par défaut si elle n'existe pas
+ */
+function get_image_url($path) {
+    if (!$path) return asset('public/images/bg-pattern.png');
+    
+    // Vérifier si le fichier existe physiquement sur le serveur
+    $full_path = __DIR__ . '/../' . ltrim($path, '/');
+    if (!file_exists($full_path)) {
+        // Si l'image a disparu (cas de Railway sans volume), on affiche un motif par défaut
+        return asset('public/images/bg-pattern.png');
+    }
+    
+    return asset($path);
 }

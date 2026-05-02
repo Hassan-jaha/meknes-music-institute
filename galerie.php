@@ -16,7 +16,7 @@ $images = $pdo->query("SELECT * FROM galerie ORDER BY upload_date DESC")->fetchA
         <div class="grid">
             <?php foreach ($images as $img): ?>
             <div class="card gallery-item">
-                <img src="<?= asset(h($img['image_path'])) ?>" class="card-img" alt="<?= h($img['titre_image']) ?>">
+                <img src="<?= get_image_url($img['image_path']) ?>" class="card-img" alt="<?= h($img['titre_image']) ?>">
                 <div class="card-body" style="text-align: center; padding: 10px;">
                     <h4 style="margin: 0; font-size: 1rem; color: var(--color-blue-primary);"><?= h($img['titre_image']) ?></h4>
                 </div>

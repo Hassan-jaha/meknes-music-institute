@@ -84,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div style="margin-bottom: 15px;">
         <label style="display: block; margin-bottom: 5px;">Image actuelle</label>
         <?php if ($annonce['image_path']): ?>
-            <img src="<?= asset($annonce['image_path']) ?>" style="width: 100px; display: block; margin-bottom: 10px;">
+            <img src="<?= get_image_url($annonce['image_path']) ?>" style="width: 100px; display: block; margin-bottom: 10px;">
         <?php else: ?>
             <p style="font-size: 0.8rem; color: gray;">Aucune image.</p>
         <?php endif; ?>

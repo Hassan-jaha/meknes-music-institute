@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div style="margin-bottom: 15px;">
         <label style="display: block; margin-bottom: 5px;"><?= __('admin_image') ?></label>
         <?php if ($actualite['image_path']): ?>
-            <img src="<?= asset($actualite['image_path']) ?>" style="width: 100px; display: block; margin-bottom: 10px;">
+            <img src="<?= get_image_url($actualite['image_path']) ?>" style="width: 100px; display: block; margin-bottom: 10px;">
         <?php endif; ?>
         <input type="file" name="image" accept="image/*" style="width: 100%; padding: 8px;">
     </div>
