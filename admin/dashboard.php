@@ -24,7 +24,7 @@ try {
         <div class="card-body">
             <h3 class="card-title"><?= __('nav_news') ?></h3>
             <p style="font-size: 2rem; color: var(--color-red-primary);"><?= $stats['actualites'] ?></p>
-            <a href="actualites/index.php" class="btn btn-primary" style="margin-top: 1rem;"><?= __('admin_manage_news') ?></a>
+            <a href="<?= asset('admin/actualites/index.php') ?>" class="btn btn-primary" style="margin-top: 1rem;"><?= __('admin_manage_news') ?></a>
         </div>
     </div>
     
@@ -32,7 +32,7 @@ try {
         <div class="card-body">
             <h3 class="card-title"><?= __('nav_announcements') ?></h3>
             <p style="font-size: 2rem; color: var(--color-red-primary);"><?= $stats['annonces'] ?></p>
-            <a href="annonces/index.php" class="btn btn-primary" style="margin-top: 1rem;"><?= __('admin_manage_announcements') ?></a>
+            <a href="<?= asset('admin/annonces/index.php') ?>" class="btn btn-primary" style="margin-top: 1rem;"><?= __('admin_manage_announcements') ?></a>
         </div>
     </div>
     
@@ -40,7 +40,7 @@ try {
         <div class="card-body">
             <h3 class="card-title"><?= __('nav_gallery') ?></h3>
             <p style="font-size: 2rem; color: var(--color-red-primary);"><?= $stats['galerie'] ?></p>
-            <a href="galerie/index.php" class="btn btn-primary" style="margin-top: 1rem;"><?= __('admin_manage_gallery') ?></a>
+            <a href="<?= asset('admin/galerie/index.php') ?>" class="btn btn-primary" style="margin-top: 1rem;"><?= __('admin_manage_gallery') ?></a>
         </div>
     </div>
     
@@ -48,7 +48,7 @@ try {
         <div class="card-body">
             <h3 class="card-title"><?= __('admin_manage_messages') ?></h3>
             <p style="font-size: 2rem; color: var(--color-gold-primary);"><?= $stats['messages'] ?></p>
-            <a href="messages/index.php" class="btn btn-primary" style="margin-top: 1rem;"><?= __('admin_manage_messages') ?></a>
+            <a href="<?= asset('admin/messages/index.php') ?>" class="btn btn-primary" style="margin-top: 1rem;"><?= __('admin_manage_messages') ?></a>
         </div>
     </div>
 </div>
