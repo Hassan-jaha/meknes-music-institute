@@ -5,15 +5,21 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 require_once __DIR__ . '/translations.php';
 
-// Changement de langue centralisé
-if (isset($_GET['lang'])) {
-    $requested_lang = $_GET['lang'];
-    if (in_array($requested_lang, ['fr', 'ar', 'en', 'zgh'])) {
-        $_SESSION['lang'] = $requested_lang;
+// Gestion de la langue
+function setLanguage($lang = null) {
+    if ($lang && in_array($lang, ['fr', 'ar', 'en', 'zgh'])) {
+        $_SESSION['lang'] = $lang;
+    } elseif (isset($_GET['lang']) && in_array($_GET['lang'], ['fr', 'ar', 'en', 'zgh'])) {
+        $_SESSION['lang'] = $_GET['lang'];
     }
 }
 
-// Libérer le verrou de session si on n'est pas dans l'administration (pour éviter que le site soit lourd/bloqué)
+// Appel automatique si pas appelé manuellement
+if (isset($_GET['lang'])) {
+    setLanguage($_GET['lang']);
+}
+
+// Libérer le verrou de session si on n'est pas dans l'administration
 if (strpos($_SERVER['PHP_SELF'], '/admin/') === false) {
     session_write_close();
 }
