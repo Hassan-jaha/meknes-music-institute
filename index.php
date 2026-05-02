@@ -65,7 +65,10 @@ $latest_news = $stmt->fetchAll();
 <?php if ($pinned_annonce): ?>
 <section style="background: var(--color-gold-primary); color: var(--admin-primary); padding: 15px 0; text-align: center; font-weight: bold; position: relative; z-index: 5;">
     <div class="container">
-        <span style="background: white; color: var(--color-red-primary); padding: 2px 10px; border-radius: 20px; font-size: 0.8rem; margin-right: 10px; text-transform: uppercase;">📌 <?= __('admin_pinned') ?></span>
+        <span style="background: white; color: var(--color-red-primary); padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; margin-right: 10px; text-transform: uppercase; display: inline-flex; align-items: center; gap: 6px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>
+            <?= __('admin_pinned') ?>
+        </span>
         <?= h($pinned_annonce['titre']) ?> 
         <a href="annonces.php" style="color: inherit; text-decoration: underline; margin-left: 15px;"><?= __('read_more') ?></a>
     </div>
