@@ -1,11 +1,22 @@
-# Fichiers de configuration sensibles
-config/database.php
-
-# Dossiers d'uploads d'images (on ne garde que le placeholder)
-public/uploads/*
-!public/uploads/.gitkeep
-
-# Fichiers système
+# System Files
 .DS_Store
 Thumbs.db
+
+# PHP/Local
+.env
+.env.local
 .vscode/
+vendor/
+
+# Database Backups
+*.sql
+!database.sql
+
+# Temporary Files
+tmp/
+temp/
+*.log
+
+# Uploads (Optional: if you want to keep repo clean of test images)
+# public/uploads/*
+# !public/uploads/.gitkeep

@@ -18,23 +18,12 @@ function getDBConnection() {
     static $pdo = null;
     
     if ($pdo === null) {
-        // Détecter si on est sur Railway (les variables d'environnement seront définies)
-        $is_railway = getenv('MYSQLHOST') !== false;
-        $is_local = !$is_railway;
-
-        if ($is_local) {
-            $db_host = '127.0.0.1';
-            $db_name = 'institut_musique';
-            $db_user = 'root';
-            $db_pass = '';
-            $db_port = '3306';
-        } else {
-            $db_host = getenv('MYSQLHOST') ?: 'localhost';
-            $db_name = getenv('MYSQLDATABASE') ?: 'railway';
-            $db_user = getenv('MYSQLUSER') ?: 'root';
-            $db_pass = getenv('MYSQLPASSWORD') ?: '';
-            $db_port = getenv('MYSQLPORT') ?: '3306';
-        }
+        // Priorité aux variables d'environnement (Railway)
+        $db_host = getenv('MYSQLHOST') ?: '127.0.0.1';
+        $db_name = getenv('MYSQLDATABASE') ?: 'institut_musique';
+        $db_user = getenv('MYSQLUSER') ?: 'root';
+        $db_pass = getenv('MYSQLPASSWORD') ?: '';
+        $db_port = getenv('MYSQLPORT') ?: '3306';
 
         try {
             $options = [
