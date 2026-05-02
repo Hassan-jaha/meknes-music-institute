@@ -82,7 +82,7 @@ $latest_news = $stmt->fetchAll();
         <div class="grid">
             <?php foreach ($latest_news as $news): ?>
             <article class="card">
-                <img src="<?= asset(h($news['image_path'])) ?>" class="card-img" alt="<?= h($news['titre']) ?>">
+                <img src="<?= get_image_url($news['image_path']) ?>" class="card-img" alt="<?= h($news['titre']) ?>">
                 <div class="card-body">
                     <span class="card-date"><?= formatDate($news['date_publication']) ?></span>
                     <h3 class="card-title"><?= h($news['titre']) ?></h3>
