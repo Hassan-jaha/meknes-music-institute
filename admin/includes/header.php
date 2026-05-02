@@ -7,11 +7,8 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-$path_prefix = (basename(dirname($_SERVER['PHP_SELF'])) === 'admin') ? '' : '../';
-$root_prefix = (basename(dirname($_SERVER['PHP_SELF'])) === 'admin') ? '../' : '../../';
-
 if (!isset($_SESSION['admin_id'])) {
-    header("Location: {$path_prefix}login.php");
+    header("Location: " . asset('admin/login.php'));
     exit;
 }
 ?>

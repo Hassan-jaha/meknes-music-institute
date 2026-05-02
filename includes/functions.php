@@ -177,15 +177,38 @@ if (!defined('BASE_URL')) {
     $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') ? "https" : "http";
     $server_host = $_SERVER['HTTP_HOST'] ?? 'localhost';
     
-    // Détection automatique du sous-répertoire (ex: /institue music/)
-    $script_path = str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? '');
-    // On retire le nom du fichier actuel (ex: index.php)
-    $root_path = preg_replace('/\/[^\/]+\.php$/', '', $script_path);
-    // On retire aussi les dossiers techniques si on est dedans
-    $root_path = preg_replace('/\/(admin|includes|config)$/', '', $root_path);
-    $root_path = rtrim($root_path, '/');
+    // Détection de la racine web du projet
+    $script_dir = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME']));
     
-    define('BASE_URL', $protocol . '://' . $server_host . $root_path . '/');
+    // On cherche le chemin relatif du script actuel par rapport à la racine du projet
+    // Ici on utilise le fait que ce fichier est TOUJOURS dans /includes/
+    $current_file = str_replace('\\', '/', __FILE__);
+    $project_root_physical = dirname(dirname($current_file));
+    
+    // On calcule la profondeur du script actuel
+    $script_path_parts = explode('/', trim($_SERVER['SCRIPT_NAME'], '/'));
+    $depth = count($script_path_parts) - 1;
+    
+    // On cherche le segment 'admin' ou le nom du dossier root
+    // Mais le plus simple : BASE_URL est le protocole + host + dossier racine si présent
+    
+    // Version ultra-robuste : on utilise la position de /includes/ dans l'URL si elle est présente, 
+    // ou on remonte selon la structure connue.
+    $root_web_path = '/';
+    if ($server_host === 'localhost' || strpos($server_host, '127.0.0.1') !== false) {
+        // En local, souvent dans /institue music/
+        $script_parts = explode('/', trim($_SERVER['SCRIPT_NAME'], '/'));
+        if (count($script_parts) > 0) {
+            $root_web_path = '/' . $script_parts[0] . '/';
+        }
+    }
+    
+    // Sur Railway, le site est à la racine
+    if (isset($_SERVER['RAILWAY_STATIC_URL']) || strpos($server_host, 'railway.app') !== false) {
+        $root_web_path = '/';
+    }
+
+    define('BASE_URL', $protocol . '://' . $server_host . $root_web_path);
 }
 
 /**
@@ -194,8 +217,7 @@ if (!defined('BASE_URL')) {
 function asset($path) {
     if (!$path) return '';
     if (strpos($path, 'http') === 0) return $path;
-    $clean_path = ltrim($path, '/');
-    return BASE_URL . $clean_path;
+    return BASE_URL . ltrim($path, '/');
 }
 
 /**
@@ -204,10 +226,9 @@ function asset($path) {
 function get_image_url($path) {
     if (!$path) return asset('public/images/bg-pattern.png');
     
-    // Vérifier si le fichier existe physiquement sur le serveur
-    $full_path = __DIR__ . '/../' . ltrim($path, '/');
+    // Chemin physique pour la vérification
+    $full_path = dirname(__DIR__) . '/' . ltrim($path, '/');
     if (!file_exists($full_path)) {
-        // Si l'image a disparu (cas de Railway sans volume), on affiche un motif par défaut
         return asset('public/images/bg-pattern.png');
     }
     
