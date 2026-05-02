@@ -127,23 +127,23 @@ a:hover {
 
 
 .hero {
- background-color:var(--color-blue-deep);
- background-image:url('../images/patterns/zellige-bg.svg');
- background-size:120px;
+ background:linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+ url('../images/meknes.png');
+ background-size:cover;
  background-position:center;
+ background-attachment:fixed;
  color:var(--color-white);
  text-align:center;
- padding:8rem 1rem;
+ padding:10rem 1rem;
  position:relative;
  overflow:hidden;
+ display:flex;
+ align-items:center;
+ justify-content:center;
 }
 
 .hero::before {
- content:'';
- position:absolute;
- top:0;left:0;right:0;bottom:0;
- background:linear-gradient(135deg, rgba(0, 29, 61, 0.95) 0%, rgba(0, 53, 102, 0.8) 100%);
- z-index:1;
+ display:none;
 }
 
 .hero-content {
