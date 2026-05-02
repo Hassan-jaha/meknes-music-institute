@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt->execute(['titre' => $titre, 'contenu' => $contenu, 'date_publication' => $date_publication, 'image_path' => $image_path, 'id' => $id]);
                 
                 $_SESSION['flash_success'] = "✅ Actualité mise à jour avec succès !";
-                header("Location: " . asset('admin/actualites/index.php'));
+                header("Location: edit.php?id=" . $id);
                 exit;
             }
         } catch (PDOException $e) {

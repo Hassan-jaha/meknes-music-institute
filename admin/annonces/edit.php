@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt->execute(['titre' => $titre, 'contenu' => $contenu, 'is_pinned' => $is_pinned, 'date_expiration' => $date_expiration, 'image_path' => $image_path, 'id' => $id]);
                 
                 $_SESSION['flash_success'] = "✅ Annonce mise à jour avec succès !";
-                header("Location: " . asset('admin/annonces/index.php'));
+                header("Location: edit.php?id=" . $id);
                 exit;
             }
         } catch (PDOException $e) {

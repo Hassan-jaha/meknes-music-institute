@@ -178,43 +178,28 @@ function resizeImage($sourcePath, $destPath, $maxWidth, $maxHeight, $forceWebP =
     return $success ? $destPath : false;
 }
 
-// Définition de BASE_URL plus robuste
+// Définition de BASE_URL — méthode physique (robuste local + Railway)
 if (!defined('BASE_URL')) {
-    $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') ? "https" : "http";
-    $server_host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-    
-    // Détection de la racine web du projet
-    $script_dir = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME']));
-    
-    // On cherche le chemin relatif du script actuel par rapport à la racine du projet
-    // Ici on utilise le fait que ce fichier est TOUJOURS dans /includes/
-    $current_file = str_replace('\\', '/', __FILE__);
-    $project_root_physical = dirname(dirname($current_file));
-    
-    // On calcule la profondeur du script actuel
-    $script_path_parts = explode('/', trim($_SERVER['SCRIPT_NAME'], '/'));
-    $depth = count($script_path_parts) - 1;
-    
-    // On cherche le segment 'admin' ou le nom du dossier root
-    // Mais le plus simple : BASE_URL est le protocole + host + dossier racine si présent
-    
-    // Version ultra-robuste : on utilise la position de /includes/ dans l'URL si elle est présente, 
-    // ou on remonte selon la structure connue.
-    $root_web_path = '/';
-    if ($server_host === 'localhost' || strpos($server_host, '127.0.0.1') !== false) {
-        // En local, souvent dans /institue music/
-        $script_parts = explode('/', trim($_SERVER['SCRIPT_NAME'], '/'));
-        if (count($script_parts) > 0) {
-            $root_web_path = '/' . $script_parts[0] . '/';
-        }
-    }
-    
-    // Sur Railway, le site est à la racine
-    if (isset($_SERVER['RAILWAY_STATIC_URL']) || strpos($server_host, 'railway.app') !== false) {
-        $root_web_path = '/';
+    $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') 
+             || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') 
+             ? "https" : "http";
+    $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+
+    // Racine physique du projet = parent de /includes/
+    $project_root = str_replace('\\', '/', dirname(__DIR__));
+    $doc_root     = rtrim(str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT'] ?? ''), '/');
+
+    // Calcul du sous-dossier web (ex: /institue%20music ou /)
+    if ($doc_root && strpos($project_root, $doc_root) === 0) {
+        $sub = substr($project_root, strlen($doc_root));
+    } else {
+        $sub = '';
     }
 
-    define('BASE_URL', $protocol . '://' . $server_host . $root_web_path);
+    $sub = '/' . trim($sub, '/');
+    if ($sub !== '/') $sub .= '/';
+
+    define('BASE_URL', $protocol . '://' . $host . $sub);
 }
 
 /**
