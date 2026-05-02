@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $stmt->execute(['titre' => $titre ?: $fileName, 'image_path' => $db_path]);
                     
                     $_SESSION['flash_success'] = "Image ajoutée et optimisée en WebP !";
-                    header("Location: index.php");
+                    header("Location: upload.php");
                     exit;
                 } else {
                     $_SESSION['flash_error'] = "Erreur lors du traitement de l'image.";

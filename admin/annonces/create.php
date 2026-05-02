@@ -29,10 +29,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 } elseif ($fileSize > 5 * 1024 * 1024) {
                     $_SESSION['flash_error'] = "L'image est trop lourde (Max 5 Mo).";
                 } else {
-                    $final_dest = resizeImage($_FILES['image']['tmp_name'], $dest_path, 1200, 800, true);
-                    if ($final_dest) {
-                        $image_path = 'public/uploads/' . basename($final_dest);
-                    }
+                $uploadDir = __DIR__ . '/../../public/uploads/';
+                if (!is_dir($uploadDir)) mkdir($uploadDir, 0777, true);
+                $newFileName = md5(time() . $fileName) . '.' . $fileExtension;
+                $dest_path = $uploadDir . $newFileName;
+
+                $final_dest = resizeImage($_FILES['image']['tmp_name'], $dest_path, 1200, 800, true);
+                if ($final_dest) {
+                    $image_path = 'public/uploads/' . basename($final_dest);
+                } else {
+                    $_SESSION['flash_error'] = "Erreur lors du traitement de l'image.";
                 }
             }
 
@@ -47,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ]);
                 
                 $_SESSION['flash_success'] = "Annonce ajoutée avec succès !";
-                header("Location: index.php");
+                header("Location: create.php");
                 exit;
             }
         } catch (PDOException $e) {
