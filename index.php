@@ -25,6 +25,42 @@ $latest_news = $stmt->fetchAll();
     </div>
 </section>
 
+<!-- Section Vidéo Ambiance (Invisible ou intégrée) -->
+<div style="display:none;"><div id="ambiance-player"></div></div>
+
+<script src="https://www.youtube.com/iframe_api"></script>
+<script>
+    var player;
+    function onYouTubeIframeAPIReady() {
+        // Player principal (visuel)
+        player = new YT.Player('main-player', {
+            videoId: '5TsEXMj-QyE',
+            playerVars: {
+                'autoplay': 1,
+                'loop': 1,
+                'playlist': '5TsEXMj-QyE',
+                'controls': 0,
+                'showinfo': 0,
+                'modestbranding': 1,
+                'rel': 0,
+                'mute': 1
+            },
+            events: {
+                'onReady': onPlayerReady
+            }
+        });
+    }
+
+    function onPlayerReady(event) {
+        event.target.playVideo();
+        // Optionnel: Unmute automatique à 15% (certains navigateurs peuvent bloquer)
+        setTimeout(function() {
+            event.target.unMute();
+            event.target.setVolume(15);
+        }, 1000);
+    }
+</script>
+
 <!-- Pinned Announcement (If exists) -->
 <?php if ($pinned_annonce): ?>
 <section style="background: var(--color-gold-primary); color: var(--admin-primary); padding: 15px 0; text-align: center; font-weight: bold; position: relative; z-index: 5;">
@@ -66,23 +102,22 @@ $latest_news = $stmt->fetchAll();
             <h2 style="font-size: 2.5rem;"><?= __('section_excellence') ?></h2>
             <p><?= __('excellence_text') ?></p>
             <ul style="margin-top: 1.5rem; list-style: none;">
-                <li style="margin-bottom: 10px; display:flex; align-items:center;">
-                    <svg width="18" height="18" fill="var(--color-gold-primary)" viewBox="0 0 24 24" style="margin-right:8px;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                <li style="margin-bottom: 12px; display:flex; align-items:center; font-weight: 500;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-gold-primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:12px;"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>
                     <?= __('excellence_list_1') ?>
                 </li>
-                <li style="margin-bottom: 10px; display:flex; align-items:center;">
-                    <svg width="18" height="18" fill="var(--color-gold-primary)" viewBox="0 0 24 24" style="margin-right:8px;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                <li style="margin-bottom: 12px; display:flex; align-items:center; font-weight: 500;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-gold-primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:12px;"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>
                     <?= __('excellence_list_2') ?>
                 </li>
-                <li style="margin-bottom: 10px; display:flex; align-items:center;">
-                    <svg width="18" height="18" fill="var(--color-gold-primary)" viewBox="0 0 24 24" style="margin-right:8px;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                <li style="margin-bottom: 12px; display:flex; align-items:center; font-weight: 500;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-gold-primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:12px;"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>
                     <?= __('excellence_list_3') ?>
                 </li>
             </ul>
         </div>
-        <div style="flex: 1; min-width: 300px;">
-             <!-- Remplacé par une image statique pour plus de rapidité -->
-             <img src="<?= asset('public/images/bg-pattern.png') ?>" alt="Pattern" style="width: 100%; border-radius: 8px; opacity: 0.1;">
+        <div style="flex: 1; min-width: 300px; border-radius: 12px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.2); position: relative; padding-bottom: 56.25%; height: 0; background: #000;">
+             <div id="main-player" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></div>
         </div>
     </div>
 </section>
