@@ -24,7 +24,15 @@ if (@file_put_contents($test_file, "Test Railway Persistence " . date('Y-m-d H:i
 
 echo "<h2>Données de la Base (Table annonces)</h2>";
 try {
-    require_once 'config/database.php';
+    require_once 'includes/functions.php';
+    echo "BASE_URL from functions.php: <b>" . BASE_URL . "</b><br>";
+    echo "DIR of functions.php: <b>" . realpath(__DIR__ . '/includes') . "</b><br>";
+    
+    $test_path = 'public/uploads/6fae512157e1c90c2e7694d3d83ec892.jpg';
+    $full_test_path = realpath(__DIR__ . '/includes/../' . $test_path);
+    echo "Check path for 6fae...jpg from functions.php logic: <b>" . ($full_test_path ? $full_test_path : "PATH NOT FOUND") . "</b><br>";
+    echo "File exists (PHP check): <b>" . (file_exists($full_test_path) ? "YES" : "NO") . "</b><br>";
+
     $pdo = getDBConnection();
     $stmt = $pdo->query("SELECT id, titre, image_path FROM annonces ORDER BY id DESC LIMIT 5");
     echo "<ul>";
