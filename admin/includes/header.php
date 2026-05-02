@@ -50,6 +50,7 @@ if (!isset($_SESSION['admin_id'])) {
             <a href="<?= asset('admin/dashboard.php') ?>" style="color: inherit;"><?= __('admin_login_header') ?></a>
         </div>
         <div class="admin-nav-links">
+            <a href="<?= asset('admin/dashboard.php') ?>"><?= __('admin_dashboard') ?></a>
             <a href="<?= asset('admin/actualites/index.php') ?>"><?= __('nav_news') ?></a>
             <a href="<?= asset('admin/annonces/index.php') ?>"><?= __('nav_announcements') ?></a>
             <a href="<?= asset('admin/galerie/index.php') ?>"><?= __('nav_gallery') ?></a>
@@ -61,6 +62,11 @@ if (!isset($_SESSION['admin_id'])) {
                 <a href="?lang=en" title="English">EN</a>
                 <a href="?lang=zgh" title="Tamazight">ⵣ</a>
             </div>
+
+            <!-- Bouton Retour au Site -->
+            <a href="<?= asset('index.php') ?>" target="_blank" class="btn-view-site" style="background: var(--color-gold-primary); color: var(--admin-primary); padding: 5px 12px; border-radius: 4px; font-weight: bold; font-size: 0.8rem; text-decoration: none;">
+                👁️ <?= __('admin_back_to_site') ?>
+            </a>
 
             <a href="<?= asset('admin/logout.php') ?>" style="color: #ff7675; border: 1px solid #ff7675; padding: 4px 12px; border-radius: 4px;"><?= __('admin_logout') ?></a>
         </div>

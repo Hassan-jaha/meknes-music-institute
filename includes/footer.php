@@ -13,6 +13,7 @@
                 <a href="actualites.php" style="color:#ecf0f1;opacity:0.8;"><?php echo __('nav_news'); ?></a>
                 <a href="annonces.php" style="color:#ecf0f1;opacity:0.8;"><?php echo __('nav_announcements'); ?></a>
                 <a href="galerie.php" style="color:#ecf0f1;opacity:0.8;"><?php echo __('nav_gallery'); ?></a>
+                <a href="contact.php" style="color:#ecf0f1;opacity:0.8;"><?php echo __('nav_contact'); ?></a>
             </div>
         </div>
         <div style="flex:1;min-width:200px;">

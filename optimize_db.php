@@ -2,35 +2,29 @@
 // optimize_db.php
 require_once __DIR__ . '/config/database.php';
 
+echo "<h1>Optimisation de la Base de Données</h1>";
+
 try {
     $pdo = getDBConnection();
     
-    // Add index to actualites.date_publication
-    $pdo->exec("ALTER TABLE actualites ADD INDEX idx_date_pub (date_publication)");
-    echo "Index added on actualites.date_publication<br>";
+    echo "<ul>";
     
-    // Add indexes to annonces
-    $pdo->exec("ALTER TABLE annonces ADD INDEX idx_is_pinned (is_pinned)");
-    echo "Index added on annonces.is_pinned<br>";
+    // Index pour les annonces (recherches fréquentes sur is_pinned et date_expiration)
+    $pdo->exec("ALTER TABLE annonces ADD INDEX IF NOT EXISTS idx_pinned_date (is_pinned, date_expiration)");
+    echo "<li>✅ Index ajouté sur 'annonces' (is_pinned, date_expiration)</li>";
     
-    $pdo->exec("ALTER TABLE annonces ADD INDEX idx_date_exp (date_expiration)");
-    echo "Index added on annonces.date_expiration<br>";
+    // Index pour les actualités (recherche par date)
+    $pdo->exec("ALTER TABLE actualites ADD INDEX IF NOT EXISTS idx_date_pub (date_publication)");
+    echo "<li>✅ Index ajouté sur 'actualites' (date_publication)</li>";
     
-    // Add index to galerie
-    $pdo->exec("ALTER TABLE galerie ADD INDEX idx_uploaded_at (uploaded_at)");
-    echo "Index added on galerie.uploaded_at<br>";
+    // Index pour les messages (recherche par date)
+    $pdo->exec("ALTER TABLE messages ADD INDEX IF NOT EXISTS idx_created (created_at)");
+    echo "<li>✅ Index ajouté sur 'messages' (created_at)</li>";
     
-    echo "<h2>Optimisation de la base de données terminée avec succès !</h2>";
-    echo "<p>Vous pouvez supprimer ce fichier pour des raisons de sécurité.</p>";
+    echo "</ul>";
+    echo "<p style='color:green;'><b>Base de données optimisée pour des requêtes instantanées !</b></p>";
     
 } catch (PDOException $e) {
-    // Ignore duplicate key errors if indexes already exist
-    if ($e->getCode() == '42000' && strpos($e->getMessage(), 'Duplicate key name') !== false) {
-        echo "Les index existent déjà.<br>";
-    } else {
-        echo "Erreur PDO : " . $e->getMessage() . "<br>";
-    }
-} catch (Exception $e) {
-    echo "Erreur : " . $e->getMessage() . "<br>";
+    echo "<p style='color:red;'>❌ Erreur SQL : " . htmlspecialchars($e->getMessage()) . "</p>";
 }
 ?>
