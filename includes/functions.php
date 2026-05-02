@@ -149,7 +149,10 @@ if (!defined('BASE_URL')) {
     
     // Détection automatique du sous-répertoire (ex: /institue music/)
     $script_path = str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? '');
-    $root_path = preg_replace('/(admin\/.*|includes\/.*|config\/.*)$/', '', $script_path);
+    // On retire le nom du fichier actuel (ex: index.php)
+    $root_path = preg_replace('/\/[^\/]+\.php$/', '', $script_path);
+    // On retire aussi les dossiers techniques si on est dedans
+    $root_path = preg_replace('/\/(admin|includes|config)$/', '', $root_path);
     $root_path = rtrim($root_path, '/');
     
     define('BASE_URL', $protocol . '://' . $server_host . $root_path . '/');
