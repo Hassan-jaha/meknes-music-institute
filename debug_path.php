@@ -21,4 +21,18 @@ if (@file_put_contents($test_file, "Test Railway Persistence " . date('Y-m-d H:i
 } else {
     echo "Écriture ÉCHOUÉE (Erreur de permission probable)<br>";
 }
+
+echo "<h2>Données de la Base (Table annonces)</h2>";
+try {
+    require_once 'config/database.php';
+    $pdo = getDBConnection();
+    $stmt = $pdo->query("SELECT id, titre, image_path FROM annonces ORDER BY id DESC LIMIT 5");
+    echo "<ul>";
+    while ($row = $stmt->fetch()) {
+        echo "<li>ID: {$row['id']} - Title: {$row['titre']} - Image Path: <b>" . ($row['image_path'] ? $row['image_path'] : "NULL") . "</b></li>";
+    }
+    echo "</ul>";
+} catch (Exception $e) {
+    echo "Erreur DB: " . $e->getMessage();
+}
 ?>
