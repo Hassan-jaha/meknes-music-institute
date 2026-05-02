@@ -9,44 +9,21 @@ $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $titre = trim($_POST['titre'] ?? '');
     
-    if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+    $image_path = handleImageUpload('image');
+    
+    if ($image_path && !isset($_SESSION['flash_error'])) {
         try {
-            $fileSize = $_FILES['image']['size'];
-            $fileName = $_FILES['image']['name'];
-            $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-            $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
-
-            if (!in_array($fileExtension, $allowedExtensions)) {
-                $_SESSION['flash_error'] = "Format non supporté (JPG, PNG, WEBP).";
-            } elseif ($fileSize > 5 * 1024 * 1024) {
-                $_SESSION['flash_error'] = "L'image est trop lourde (Max 5 Mo).";
-            } else {
-                $newFileName = md5(time() . $fileName) . '.' . $fileExtension;
-                $dest_path = '../../public/uploads/' . $newFileName;
-                
-                // On force le format WebP et le ratio 3:2 (1200x800)
-                $final_dest = resizeImage($_FILES['image']['tmp_name'], $dest_path, 1200, 800, true);
-                
-                if ($final_dest) {
-                    // On récupère le nom du fichier final (qui peut avoir changé d'extension en .webp)
-                    $finalFileName = basename($final_dest);
-                    $db_path = 'public/uploads/' . $finalFileName;
-
-                    $pdo = getDBConnection();
-                    $stmt = $pdo->prepare("INSERT INTO galerie (titre_image, image_path) VALUES (:titre, :image_path)");
-                    $stmt->execute(['titre' => $titre ?: $fileName, 'image_path' => $db_path]);
-                    
-                    $_SESSION['flash_success'] = "Image ajoutée et optimisée en WebP !";
-                    header("Location: upload.php");
-                    exit;
-                } else {
-                    $_SESSION['flash_error'] = "Erreur lors du traitement de l'image.";
-                }
-            }
+            $pdo = getDBConnection();
+            $stmt = $pdo->prepare("INSERT INTO galerie (titre_image, image_path) VALUES (:titre, :image_path)");
+            $stmt->execute(['titre' => $titre ?: $_FILES['image']['name'], 'image_path' => $image_path]);
+            
+            $_SESSION['flash_success'] = "Image ajoutée et optimisée en WebP !";
+            header("Location: upload.php");
+            exit;
         } catch (PDOException $e) {
             $_SESSION['flash_error'] = "Erreur Base de données : " . $e->getMessage();
         }
-    } else {
+    } elseif (!isset($_SESSION['flash_error'])) {
         $_SESSION['flash_error'] = "Veuillez sélectionner une image valide.";
     }
 }

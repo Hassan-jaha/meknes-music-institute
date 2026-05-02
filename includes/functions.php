@@ -234,3 +234,47 @@ function get_image_url($path) {
     
     return asset($path);
 }
+
+/**
+ * Gère l'upload et le redimensionnement d'une image
+ * Retourne le chemin relatif pour la DB ou false en cas d'erreur
+ */
+function handleImageUpload($fileField, $oldPath = null) {
+    if (!isset($_FILES[$fileField]) || $_FILES[$fileField]['error'] !== UPLOAD_ERR_OK) {
+        return $oldPath;
+    }
+
+    $file = $_FILES[$fileField];
+    $fileSize = $file['size'];
+    $fileName = $file['name'];
+    $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+    $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+
+    if (!in_array($fileExtension, $allowedExtensions)) {
+        $_SESSION['flash_error'] = "Format non supporté (JPG, PNG, WEBP).";
+        return false;
+    }
+
+    if ($fileSize > 5 * 1024 * 1024) {
+        $_SESSION['flash_error'] = "L'image est trop lourde (Max 5 Mo).";
+        return false;
+    }
+
+    $uploadDir = dirname(__DIR__) . '/public/uploads/';
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0777, true);
+    }
+
+    $newFileName = md5(uniqid(rand(), true)) . '.' . $fileExtension;
+    $destPath = $uploadDir . $newFileName;
+
+    // On force le redimensionnement en 1200x800
+    $finalPath = resizeImage($file['tmp_name'], $destPath, 1200, 800, true);
+    
+    if ($finalPath) {
+        return 'public/uploads/' . basename($finalPath);
+    }
+
+    $_SESSION['flash_error'] = "Erreur lors du traitement de l'image.";
+    return false;
+}

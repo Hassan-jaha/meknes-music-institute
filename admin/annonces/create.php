@@ -17,30 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             $pdo = getDBConnection();
             
-            // Gestion de l'image (Optionnelle)
-            if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-                $fileSize = $_FILES['image']['size'];
-                $fileName = $_FILES['image']['name'];
-                $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-                $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
-
-                if (!in_array($fileExtension, $allowedExtensions)) {
-                    $_SESSION['flash_error'] = "Format non supporté (JPG, PNG, WEBP).";
-                } elseif ($fileSize > 5 * 1024 * 1024) {
-                    $_SESSION['flash_error'] = "L'image est trop lourde (Max 5 Mo).";
-                } else {
-                $uploadDir = __DIR__ . '/../../public/uploads/';
-                if (!is_dir($uploadDir)) mkdir($uploadDir, 0777, true);
-                $newFileName = md5(time() . $fileName) . '.' . $fileExtension;
-                $dest_path = $uploadDir . $newFileName;
-
-                $final_dest = resizeImage($_FILES['image']['tmp_name'], $dest_path, 1200, 800, true);
-                if ($final_dest) {
-                    $image_path = 'public/uploads/' . basename($final_dest);
-                } else {
-                    $_SESSION['flash_error'] = "Erreur lors du traitement de l'image.";
-                }
-            }
+            // Gestion de l'image via helper
+            $image_path = handleImageUpload('image');
 
             if (!isset($_SESSION['flash_error'])) {
                 $stmt = $pdo->prepare("INSERT INTO annonces (titre, contenu, is_pinned, date_expiration, image_path) VALUES (:titre, :contenu, :is_pinned, :date_expiration, :image_path)");
