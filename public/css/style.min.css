@@ -127,7 +127,7 @@ a:hover {
 
 
 .hero {
- background:var(--color-blue-deep) url('../images/meknes.png') no-repeat center center;
+ background:var(--color-blue-deep) url('../images/meknes.png?v=2') no-repeat center center;
  background-size:contain;
  min-height:85vh;
  color:var(--color-white);

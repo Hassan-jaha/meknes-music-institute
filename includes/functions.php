@@ -136,24 +136,25 @@ function resizeImage($sourcePath, $destPath, $maxWidth, $maxHeight) {
     return true;
 }
 
-// Définition de BASE_URL pour gérer les chemins absolus (Local vs Production)
+// Définition de BASE_URL plus robuste
 if (!defined('BASE_URL')) {
     $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') ? "https" : "http";
     $server_host = $_SERVER['HTTP_HOST'] ?? 'localhost';
     
-    // Si l'URL commence par /institue music/ (cas de XAMPP), on l'inclut dans la base
-    if (strpos($_SERVER['REQUEST_URI'] ?? '', '/institue music/') === 0) {
-        define('BASE_URL', $protocol . '://' . $server_host . '/institue music/');
-    } else {
-        define('BASE_URL', $protocol . '://' . $server_host . '/');
-    }
+    // Détection automatique du sous-répertoire (ex: /institue music/)
+    // On récupère le chemin du script actuel et on remonte d'un niveau si on est dans includes/
+    $script_path = str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? '');
+    $root_path = preg_replace('/(admin\/.*|includes\/.*|config\/.*)$/', '', $script_path);
+    $root_path = rtrim($root_path, '/');
+    
+    define('BASE_URL', $protocol . '://' . $server_host . $root_path . '/');
 }
 
 /**
  * Retourne le chemin absolu vers un asset (image, css, js)
- * Gère automatiquement l'environnement Local vs Railway
  */
 function asset($path) {
+    if (!$path) return '';
     // Si le chemin commence déjà par http, on le laisse
     if (strpos($path, 'http') === 0) return $path;
     
