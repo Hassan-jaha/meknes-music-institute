@@ -42,7 +42,32 @@ function getDBConnection() {
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                 PDO::ATTR_TIMEOUT => 3 // Timeout court pour éviter que le site bloque
             ];
-            $pdo = new PDO("mysql:host=$db_host;port=$db_port;dbname=$db_name;charset=utf8", $db_user, $db_pass, $options);
+            $dsn = "mysql:host=$db_host;port=$db_port;dbname=$db_name;charset=utf8";
+            $pdo = new PDO($dsn, $db_user, $db_pass, $options);
+            
+            // --- AUTOMATIC SCHEMA FIX (One-time check) ---
+            
+            // Correction table annonces (image_path)
+            $check = $pdo->query("SHOW COLUMNS FROM annonces LIKE 'image_path'");
+            if (!$check->fetch()) {
+                $pdo->exec("ALTER TABLE annonces ADD COLUMN image_path VARCHAR(255) DEFAULT NULL AFTER date_expiration");
+            }
+
+            // Correction table actualites (image_path)
+            $check = $pdo->query("SHOW COLUMNS FROM actualites LIKE 'image_path'");
+            if (!$check->fetch()) {
+                $pdo->exec("ALTER TABLE actualites ADD COLUMN image_path VARCHAR(255) DEFAULT NULL AFTER contenu");
+            }
+
+            // Création table messages si elle n'existe pas
+            $pdo->exec("CREATE TABLE IF NOT EXISTS messages (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                nom VARCHAR(100) NOT NULL,
+                email VARCHAR(100) NOT NULL,
+                message TEXT NOT NULL,
+                date_envoi DATETIME DEFAULT CURRENT_TIMESTAMP
+            )");
+            
         } catch (PDOException $e) {
             die("خطأ في الاتصال: " . $e->getMessage());
         }
