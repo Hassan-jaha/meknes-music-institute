@@ -29,10 +29,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 } elseif ($fileSize > 5 * 1024 * 1024) {
                     $_SESSION['flash_error'] = "L'image est trop lourde (Max 5 Mo).";
                 } else {
-                    $newFileName = md5(time() . $fileName) . '.' . $fileExtension;
-                    $dest_path = '../../public/uploads/' . $newFileName;
-                    if (resizeImage($_FILES['image']['tmp_name'], $dest_path, 1200, 800)) {
-                        $image_path = 'public/uploads/' . $newFileName;
+                    $final_dest = resizeImage($_FILES['image']['tmp_name'], $dest_path, 1200, 800, true);
+                    if ($final_dest) {
+                        $image_path = 'public/uploads/' . basename($final_dest);
                     }
                 }
             }

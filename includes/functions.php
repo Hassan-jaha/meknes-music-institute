@@ -89,7 +89,7 @@ function truncateText($text, $length = 100) {
  * @param int $maxHeight
  * @return bool
  */
-function resizeImage($sourcePath, $destPath, $maxWidth, $maxHeight) {
+function resizeImage($sourcePath, $destPath, $maxWidth, $maxHeight, $forceWebP = false) {
     // Vérifier et créer le dossier de destination si nécessaire
     $destDir = dirname($destPath);
     if (!is_dir($destDir)) {
@@ -105,12 +105,17 @@ function resizeImage($sourcePath, $destPath, $maxWidth, $maxHeight) {
     if (!$info) return false;
 
     list($width, $height, $type) = $info;
-    $ratio = $width / $height;
+    
+    // Calcul du ratio
+    $srcRatio = $width / $height;
+    $destRatio = $maxWidth / $maxHeight;
 
-    if ($maxWidth / $maxHeight > $ratio) {
-        $maxWidth = $maxHeight * $ratio;
+    if ($srcRatio > $destRatio) {
+        $tempWidth = $maxHeight * $srcRatio;
+        $tempHeight = $maxHeight;
     } else {
-        $maxHeight = $maxWidth / $ratio;
+        $tempWidth = $maxWidth;
+        $tempHeight = $maxWidth / $srcRatio;
     }
 
     switch ($type) {
@@ -124,22 +129,47 @@ function resizeImage($sourcePath, $destPath, $maxWidth, $maxHeight) {
 
     $dst = imagecreatetruecolor($maxWidth, $maxHeight);
     
-    if ($type == IMAGETYPE_PNG || $type == IMAGETYPE_WEBP) {
+    // Gestion de la transparence
+    if ($type == IMAGETYPE_PNG || $type == IMAGETYPE_WEBP || $forceWebP) {
         imagealphablending($dst, false);
         imagesavealpha($dst, true);
+        $transparent = imagecolorallocatealpha($dst, 255, 255, 255, 127);
+        imagefilledrectangle($dst, 0, 0, $maxWidth, $maxHeight, $transparent);
     }
 
-    imagecopyresampled($dst, $src, 0, 0, 0, 0, $maxWidth, $maxHeight, $width, $height);
+    // Crop au centre pour respecter exactement le ratio demandé (ex: 3:2)
+    $srcX = 0;
+    $srcY = 0;
+    $srcW = $width;
+    $srcH = $height;
 
-    switch ($type) {
-        case IMAGETYPE_JPEG: imagejpeg($dst, $destPath, 85); break;
-        case IMAGETYPE_PNG:  imagepng($dst, $destPath); break;
-        case IMAGETYPE_WEBP: imagewebp($dst, $destPath, 85); break;
+    if ($srcRatio > $destRatio) {
+        $srcW = $height * $destRatio;
+        $srcX = ($width - $srcW) / 2;
+    } else {
+        $srcH = $width / $destRatio;
+        $srcY = ($height - $srcH) / 2;
+    }
+
+    imagecopyresampled($dst, $src, 0, 0, $srcX, $srcY, $maxWidth, $maxHeight, $srcW, $srcH);
+
+    // Sauvegarde
+    $success = false;
+    if ($forceWebP && function_exists('imagewebp')) {
+        // Changer l'extension du fichier de destination si c'est forcé en WebP
+        $destPath = preg_replace('/\.(jpg|jpeg|png)$/i', '.webp', $destPath);
+        $success = imagewebp($dst, $destPath, 80);
+    } else {
+        switch ($type) {
+            case IMAGETYPE_JPEG: $success = imagejpeg($dst, $destPath, 85); break;
+            case IMAGETYPE_PNG:  $success = imagepng($dst, $destPath); break;
+            case IMAGETYPE_WEBP: $success = imagewebp($dst, $destPath, 85); break;
+        }
     }
 
     imagedestroy($src);
     imagedestroy($dst);
-    return true;
+    return $success ? $destPath : false;
 }
 
 // Définition de BASE_URL plus robuste
