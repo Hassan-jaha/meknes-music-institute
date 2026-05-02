@@ -13,23 +13,23 @@ $actualites = $pdo->query("SELECT * FROM actualites ORDER BY date_publication DE
     <a href="create.php" class="btn btn-primary">+ <?= __('admin_add_new') ?></a>
 </div>
 
-<div class="card" style="padding: 0; overflow: hidden; border: none;">
-    <table style="width: 100%; border-collapse: collapse; background: white;">
+<div class="admin-table-container">
+    <table>
         <thead>
-            <tr style="background: var(--admin-primary); color: white;">
-                <th style="padding: 15px; text-align: left;"><?= __('admin_table_title') ?></th>
-                <th style="padding: 15px; text-align: left;"><?= __('admin_table_date') ?></th>
-                <th style="padding: 15px; text-align: right;"><?= __('admin_table_actions') ?></th>
+            <tr>
+                <th><?= __('form_label_title') ?></th>
+                <th><?= __('form_label_date') ?></th>
+                <th style="text-align: right;"><?= __('admin_actions') ?></th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($actualites as $actu): ?>
-            <tr style="border-bottom: 1px solid #edf2f7; transition: background 0.2s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='white'">
-                <td style="padding: 15px; font-weight: 500;"><?= h($actu['titre']) ?></td>
-                <td style="padding: 15px; color: #718096;"><?= formatDate($actu['date_publication']) ?></td>
-                <td style="padding: 15px; text-align: right;">
-                    <a href="edit.php?id=<?= $actu['id'] ?>" class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.8rem; margin-right: 5px;"><?= __('admin_edit') ?></a>
-                    <a href="delete.php?id=<?= $actu['id'] ?>" class="btn" style="padding: 4px 10px; font-size: 0.8rem; color: #e74c3c; border: 1px solid #e74c3c;"><?= __('admin_delete') ?></a>
+            <?php foreach ($actualites as $news): ?>
+            <tr>
+                <td style="font-weight: bold;"><?= h($news['titre']) ?></td>
+                <td style="color: #64748b;"><?= formatDate($news['date_publication']) ?></td>
+                <td style="text-align: right;">
+                    <a href="edit.php?id=<?= $news['id'] ?>" style="color: #6366f1; margin-right: 15px; font-weight: 600; text-decoration: none;"><?= __('admin_edit') ?></a>
+                    <a href="delete.php?id=<?= $news['id'] ?>" style="color: #ef4444; font-weight: 600; text-decoration: none; border: 1px solid #fecaca; padding: 4px 10px; border-radius: 4px;" onclick="return confirm('<?= __('admin_confirm_delete') ?>')"><?= __('admin_delete') ?></a>
                 </td>
             </tr>
             <?php endforeach; ?>
